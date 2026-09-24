@@ -76,11 +76,11 @@ export function formatIssue(issue: z.core.$ZodIssue, rawInput: unknown): Validat
       if (unit) return { field, message: `${subject} must contain at most ${max} ${unit}` };
       return { field, message: `${subject} must be less than ${issue.inclusive ? 'or equal to ' : ''}${max}` };
     }
-    case 'invalid_value':
-      return {
-        field,
-        message: `${subject} must be one of: ${issue.values.map((v) => JSON.stringify(v)).join(', ')}`,
-      };
+    case 'invalid_value': {
+      const choices = issue.values.map((v) => JSON.stringify(v)).join(', ');
+      if (valueAt(rawInput, issue.path) === undefined) return { field, message: `${subject} is required (one of: ${choices})` };
+      return { field, message: `${subject} must be one of: ${choices}` };
+    }
     case 'invalid_format':
       if (issue.message && !issue.message.startsWith('Invalid')) return { field, message: withSubject(subject, issue.message) };
       return { field, message: `${subject} must be a valid ${issue.format}` };
