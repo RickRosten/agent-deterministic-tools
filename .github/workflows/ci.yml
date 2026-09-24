@@ -51,11 +51,14 @@ jobs:
       - name: Package validation
         run: npm run validate:packages
 
+      # bash on every OS: PowerShell would split the JSON argument on its quotes.
       - name: CLI smoke test
+        shell: bash
         run: |
           node packages/cli/dist/bin.js --version
           node packages/cli/dist/bin.js doctor
-          node packages/cli/dist/bin.js call math.sum "{\"values\":[0.1,0.2]}"
+          node packages/cli/dist/bin.js call math.sum '{"values":[0.1,0.2]}' | tee sum.json
+          grep -q '"result": 0.3' sum.json
 
   docker:
     name: Docker image
