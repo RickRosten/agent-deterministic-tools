@@ -139,7 +139,7 @@ describe('executeTool', () => {
         code: 'INVALID_INPUT',
         message: 'annualRate must be greater than or equal to 0',
         field: 'annualRate',
-        details: { issues: [{}, { field: 'values', message: 'values must contain at least 1 items' }] },
+        details: { issues: [{}, { field: 'values', message: 'values must contain at least 1 item' }] },
       },
     });
   });

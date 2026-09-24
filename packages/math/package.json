@@ -1,0 +1,46 @@
+{
+  "name": "@rickrosten/agent-deterministic-tools-math",
+  "version": "1.0.0",
+  "description": "Deterministic math tools for AI agents: percentages, ratios, proportions, averages, rounding, powers and roots.",
+  "license": "MIT",
+  "author": "Artyom Churbanov",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "sideEffects": false,
+  "engines": {
+    "node": ">=20"
+  },
+  "keywords": [
+    "deterministic-tools-module",
+    "math",
+    "mcp",
+    "ai-tools"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RickRosten/agent-deterministic-tools.git",
+    "directory": "packages/math"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "tsup src/index.ts --format esm --dts --clean --target node20 --tsconfig ../../tsconfig.build.json"
+  },
+  "dependencies": {
+    "@rickrosten/agent-deterministic-tools-core": "^1.0.0",
+    "decimal.js": "^10.6.0"
+  }
+}

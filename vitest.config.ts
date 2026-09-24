@@ -14,6 +14,7 @@ export default defineConfig({
   test: {
     include: ['packages/*/tests/**/*.test.ts', 'examples/*/tests/**/*.test.ts', 'tests/**/*.test.ts', 'apps/*/tests/**/*.test.ts'],
     environment: 'node',
+    pool: 'threads',
     testTimeout: 30_000,
     env: { TZ: 'Pacific/Kiritimati' },
   },

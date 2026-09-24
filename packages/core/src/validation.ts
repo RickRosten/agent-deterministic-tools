@@ -28,13 +28,14 @@ function describeType(value: unknown): string {
   return typeof value;
 }
 
-function boundKind(origin: string): string {
+function boundKind(origin: string, count: string): string {
+  const plural = count === '1' ? '' : 's';
   switch (origin) {
     case 'array':
     case 'set':
-      return 'items';
+      return `item${plural}`;
     case 'string':
-      return 'characters';
+      return `character${plural}`;
     default:
       return '';
   }
@@ -56,8 +57,8 @@ export function formatIssue(issue: z.core.$ZodIssue, rawInput: unknown): Validat
       return { field, message: `${subject} must be ${issue.expected}, received ${describeType(actual)}` };
     }
     case 'too_small': {
-      const unit = boundKind(issue.origin);
       const min = String(issue.minimum);
+      const unit = boundKind(issue.origin, min);
       if (unit) return { field, message: `${subject} must contain at least ${min} ${unit}` };
       return {
         field,
@@ -65,8 +66,8 @@ export function formatIssue(issue: z.core.$ZodIssue, rawInput: unknown): Validat
       };
     }
     case 'too_big': {
-      const unit = boundKind(issue.origin);
       const max = String(issue.maximum);
+      const unit = boundKind(issue.origin, max);
       if (unit) return { field, message: `${subject} must contain at most ${max} ${unit}` };
       return { field, message: `${subject} must be less than ${issue.inclusive ? 'or equal to ' : ''}${max}` };
     }
