@@ -2,7 +2,7 @@ import { describeTool, type ToolDescriptor } from './describe.js';
 import { ErrorCode, RegistryError } from './errors.js';
 import { executeTool, type ExecuteOptions, type ExecutionObserver, type ToolResult } from './execute.js';
 import { assertValidModule, type Module } from './module.js';
-import type { AnyTool } from './tool.js';
+import { normalizeTool, type AnyTool } from './tool.js';
 
 export interface RegisteredTool {
   /** Fully-qualified name: `<moduleId>.<toolName>`. */
@@ -68,7 +68,7 @@ export class ToolRegistry {
     const entries: RegisteredTool[] = module.tools.map((tool) => ({
       name: `${module.id}.${tool.name}`,
       moduleId: module.id,
-      tool,
+      tool: normalizeTool(tool),
     }));
     for (const entry of entries) {
       if (this.#tools.has(entry.name)) {

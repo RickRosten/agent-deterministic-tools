@@ -112,6 +112,37 @@ export function defineTool<IS extends z.ZodType, OS extends z.ZodType>(
   return Object.freeze(tool);
 }
 
+/**
+ * Fills optional metadata for tools that were built as plain objects (e.g. by third-party
+ * modules not using `defineTool`). Tools from `defineTool` are returned unchanged.
+ */
+export function normalizeTool(tool: AnyTool): AnyTool {
+  if (
+    Object.isFrozen(tool) &&
+    Array.isArray(tool.whenToUse) &&
+    Array.isArray(tool.whenNotToUse) &&
+    Array.isArray(tool.limitations) &&
+    Array.isArray(tool.examples) &&
+    typeof tool.annotations === 'object'
+  ) {
+    return tool;
+  }
+  const raw = tool as Partial<AnyTool> & Pick<AnyTool, 'name' | 'description' | 'inputSchema' | 'outputSchema' | 'execute'>;
+  return Object.freeze({
+    name: raw.name,
+    title: raw.title,
+    description: raw.description,
+    whenToUse: toList(raw.whenToUse as readonly string[] | string | undefined),
+    whenNotToUse: toList(raw.whenNotToUse as readonly string[] | string | undefined),
+    limitations: toList(raw.limitations as readonly string[] | string | undefined),
+    examples: Object.freeze([...(raw.examples ?? [])]),
+    annotations: Object.freeze({ ...DEFAULT_ANNOTATIONS, ...raw.annotations }),
+    inputSchema: raw.inputSchema,
+    outputSchema: raw.outputSchema,
+    execute: raw.execute.bind(raw),
+  });
+}
+
 export function isTool(value: unknown): value is AnyTool {
   if (typeof value !== 'object' || value === null) return false;
   const v = value as Record<string, unknown>;

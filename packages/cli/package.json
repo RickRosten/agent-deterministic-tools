@@ -1,0 +1,61 @@
+{
+  "name": "@rickrosten/agent-deterministic-tools",
+  "version": "1.0.0",
+  "description": "Deterministic calculation tools for AI agents as a local MCP server. Run `npx @rickrosten/agent-deterministic-tools` to set up Claude, Cursor or OpenAI.",
+  "license": "MIT",
+  "author": "Artyom Churbanov",
+  "type": "module",
+  "bin": {
+    "deterministic-tools": "./dist/bin.js"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "keywords": [
+    "mcp",
+    "mcp-server",
+    "claude",
+    "cursor",
+    "openai",
+    "ai-tools",
+    "calculator",
+    "deterministic"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RickRosten/agent-deterministic-tools.git",
+    "directory": "packages/cli"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "tsup src/index.ts src/bin.ts --format esm --dts --clean --target node20 --tsconfig ../../tsconfig.build.json"
+  },
+  "dependencies": {
+    "@clack/prompts": "^1.0.0",
+    "@modelcontextprotocol/sdk": "^1.30.0",
+    "@rickrosten/agent-deterministic-tools-core": "^1.0.0",
+    "@rickrosten/agent-deterministic-tools-datetime": "^1.0.0",
+    "@rickrosten/agent-deterministic-tools-finance": "^1.0.0",
+    "@rickrosten/agent-deterministic-tools-math": "^1.0.0",
+    "@rickrosten/agent-deterministic-tools-mcp": "^1.0.0",
+    "@rickrosten/agent-deterministic-tools-openai": "^1.0.0",
+    "@rickrosten/agent-deterministic-tools-statistics": "^1.0.0",
+    "@rickrosten/agent-deterministic-tools-units": "^1.0.0",
+    "commander": "^14.0.0"
+  }
+}

@@ -16,6 +16,7 @@ export {
 export {
   defineTool,
   isTool,
+  normalizeTool,
   TOOL_NAME_PATTERN,
   type Tool,
   type AnyTool,
