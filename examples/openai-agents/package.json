@@ -1,0 +1,19 @@
+{
+  "name": "deterministic-tools-example-openai",
+  "private": true,
+  "type": "module",
+  "description": "Using Deterministic Tools with the OpenAI Responses API, Chat Completions and the Agents SDK.",
+  "scripts": {
+    "responses": "node responses.mjs",
+    "chat": "node chat-completions.mjs",
+    "agents": "node agents.mjs"
+  },
+  "dependencies": {
+    "@openai/agents": "^0.18.0",
+    "@rickrosten/agent-deterministic-tools-core": "^1.0.0",
+    "@rickrosten/agent-deterministic-tools-finance": "^1.0.0",
+    "@rickrosten/agent-deterministic-tools-math": "^1.0.0",
+    "@rickrosten/agent-deterministic-tools-openai": "^1.0.0",
+    "openai": "^7.23.0"
+  }
+}

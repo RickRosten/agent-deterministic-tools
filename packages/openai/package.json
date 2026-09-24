@@ -1,0 +1,45 @@
+{
+  "name": "@rickrosten/agent-deterministic-tools-openai",
+  "version": "1.0.0",
+  "description": "OpenAI adapter for Deterministic Tools: function/tool definitions for Chat Completions, Responses API and the Agents SDK, plus a tool-call executor.",
+  "license": "MIT",
+  "author": "Artyom Churbanov",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "sideEffects": false,
+  "engines": {
+    "node": ">=20"
+  },
+  "keywords": [
+    "openai",
+    "function-calling",
+    "ai-tools",
+    "deterministic"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RickRosten/agent-deterministic-tools.git",
+    "directory": "packages/openai"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "tsup src/index.ts --format esm --dts --clean --target node20 --tsconfig ../../tsconfig.build.json"
+  },
+  "dependencies": {
+    "@rickrosten/agent-deterministic-tools-core": "^1.0.0"
+  }
+}

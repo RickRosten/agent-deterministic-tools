@@ -10,7 +10,7 @@
   "workspaces": [
     "packages/*",
     "apps/*",
-    "examples/*"
+    "examples/acme-chemistry"
   ],
   "scripts": {
     "build": "node scripts/build.mjs",
