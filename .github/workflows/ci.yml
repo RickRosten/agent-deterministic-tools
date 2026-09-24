@@ -1,0 +1,73 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    name: ${{ matrix.os }} / Node ${{ matrix.node }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        node: [20, 22]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+          cache: npm
+
+      - run: npm ci
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Unit tests
+        run: npm run test:unit
+
+      - name: Build
+        run: npm run build
+
+      - name: Integration tests
+        run: npm run test:integration
+        env:
+          REQUIRE_BUILD: '1'
+
+      - name: Package validation
+        run: npm run validate:packages
+
+      - name: CLI smoke test
+        run: |
+          node packages/cli/dist/bin.js --version
+          node packages/cli/dist/bin.js doctor
+          node packages/cli/dist/bin.js call math.sum "{\"values\":[0.1,0.2]}"
+
+  docker:
+    name: Docker image
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build server image
+        run: docker build -f apps/server/Dockerfile -t deterministic-tools-server .
+      - name: Smoke test
+        run: |
+          docker run -d --name dt -p 3333:3333 -e DETERMINISTIC_TOOLS_AUTH_TOKEN=ci deterministic-tools-server
+          for i in $(seq 1 20); do curl -fsS http://127.0.0.1:3333/healthz && break; sleep 1; done
+          curl -fsS http://127.0.0.1:3333/healthz | grep '"tools":43'
+          test "$(curl -s -o /dev/null -w '%{http_code}' -X POST http://127.0.0.1:3333/mcp)" = "401"
+          docker rm -f dt
