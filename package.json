@@ -17,6 +17,7 @@
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "lint": "eslint .",
     "test": "vitest run",
+    "test:unit": "vitest run --exclude \"tests/integration/**\" --exclude \"**/node_modules/**\"",
     "test:watch": "vitest",
     "test:integration": "vitest run tests/integration",
     "validate:packages": "node scripts/validate-packages.mjs",

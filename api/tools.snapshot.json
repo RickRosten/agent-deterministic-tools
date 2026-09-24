@@ -1,0 +1,3860 @@
+{
+  "modules": [
+    {
+      "id": "math",
+      "version": "1.0.0",
+      "tools": [
+        "math.percentage",
+        "math.percentage_of",
+        "math.percentage_change",
+        "math.ratio",
+        "math.proportion",
+        "math.average",
+        "math.weighted_average",
+        "math.sum",
+        "math.min",
+        "math.max",
+        "math.round",
+        "math.power",
+        "math.root"
+      ]
+    },
+    {
+      "id": "finance",
+      "version": "1.0.0",
+      "tools": [
+        "finance.compound_interest",
+        "finance.simple_interest",
+        "finance.future_value",
+        "finance.present_value",
+        "finance.annuity_future_value",
+        "finance.annuity_present_value",
+        "finance.loan_payment",
+        "finance.loan_amortization",
+        "finance.total_interest",
+        "finance.npv",
+        "finance.irr"
+      ]
+    },
+    {
+      "id": "statistics",
+      "version": "1.0.0",
+      "tools": [
+        "statistics.mean",
+        "statistics.median",
+        "statistics.mode",
+        "statistics.variance",
+        "statistics.standard_deviation",
+        "statistics.percentile",
+        "statistics.min",
+        "statistics.max",
+        "statistics.sum"
+      ]
+    },
+    {
+      "id": "datetime",
+      "version": "1.0.0",
+      "tools": [
+        "datetime.date_difference",
+        "datetime.add_days",
+        "datetime.add_business_days",
+        "datetime.business_days_between",
+        "datetime.is_business_day",
+        "datetime.day_of_week",
+        "datetime.days_in_month",
+        "datetime.is_leap_year"
+      ]
+    },
+    {
+      "id": "units",
+      "version": "1.0.0",
+      "tools": [
+        "units.convert",
+        "units.list_units"
+      ]
+    }
+  ],
+  "tools": [
+    {
+      "name": "math.percentage",
+      "moduleVersion": "1.0.0",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "part": {
+            "type": "number",
+            "description": "The part value."
+          },
+          "whole": {
+            "type": "number",
+            "description": "The total value (denominator). Must be non-zero."
+          }
+        },
+        "required": [
+          "part",
+          "whole"
+        ],
+        "additionalProperties": false
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "number",
+            "description": "Percentage (16 means 16%)."
+          },
+          "unit": {
+            "type": "string",
+            "const": "percent"
+          }
+        },
+        "required": [
+          "result",
+          "unit"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "math.percentage_of",
+      "moduleVersion": "1.0.0",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "percent": {
+            "type": "number",
+            "description": "Percent to take, e.g. 15 for 15%."
+          },
+          "value": {
+            "type": "number",
+            "description": "The base value."
+          }
+        },
+        "required": [
+          "percent",
+          "value"
+        ],
+        "additionalProperties": false
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "result"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "math.percentage_change",
+      "moduleVersion": "1.0.0",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "oldValue": {
+            "type": "number",
+            "description": "Original (reference) value. Must be non-zero."
+          },
+          "newValue": {
+            "type": "number",
+            "description": "New value."
+          }
+        },
+        "required": [
+          "oldValue",
+          "newValue"
+        ],
+        "additionalProperties": false
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "number",
+            "description": "Percent change; negative for decrease."
+          },
+          "unit": {
+            "type": "string",
+            "const": "percent"
+          },
+          "absoluteChange": {
+            "type": "number"
+          },
+          "direction": {
+            "type": "string",
+            "enum": [
+              "increase",
+              "decrease",
+              "unchanged"
+            ]
+          }
+        },
+        "required": [
+          "result",
+          "unit",
+          "absoluteChange",
+          "direction"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "math.ratio",
+      "moduleVersion": "1.0.0",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "a": {
+            "type": "number",
+            "description": "First term (antecedent)."
+          },
+          "b": {
+            "type": "number",
+            "description": "Second term (consequent). Must be non-zero."
+          }
+        },
+        "required": [
+          "a",
+          "b"
+        ],
+        "additionalProperties": false
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "number",
+            "description": "a / b"
+          },
+          "antecedent": {
+            "description": "Reduced integer first term, as a string to avoid precision loss.",
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "consequent": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "formatted": {
+            "description": "Reduced ratio \"x:y\", or null if not reducible to integers.",
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "result",
+          "antecedent",
+          "consequent",
+          "formatted"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "math.proportion",
+      "moduleVersion": "1.0.0",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "a": {
+            "type": "number",
+            "description": "Numerator of the left fraction."
+          },
+          "b": {
+            "type": "number",
+            "description": "Denominator of the left fraction."
+          },
+          "c": {
+            "type": "number",
+            "description": "Numerator of the right fraction."
+          },
+          "d": {
+            "type": "number",
+            "description": "Denominator of the right fraction."
+          }
+        },
+        "additionalProperties": false
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "number",
+            "description": "Value of the missing term."
+          },
+          "solvedFor": {
+            "type": "string",
+            "enum": [
+              "a",
+              "b",
+              "c",
+              "d"
+            ]
+          },
+          "a": {
+            "type": "number"
+          },
+          "b": {
+            "type": "number"
+          },
+          "c": {
+            "type": "number"
+          },
+          "d": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "result",
+          "solvedFor",
+          "a",
+          "b",
+          "c",
+          "d"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "math.average",
+      "moduleVersion": "1.0.0",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "values": {
+            "minItems": 1,
+            "maxItems": 100000,
+            "type": "array",
+            "items": {
+              "type": "number"
+            },
+            "description": "Non-empty list of finite numbers (max 100000)."
+          }
+        },
+        "required": [
+          "values"
+        ],
+        "additionalProperties": false
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "number"
+          },
+          "count": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          },
+          "sum": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "result",
+          "count",
+          "sum"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "math.weighted_average",
+      "moduleVersion": "1.0.0",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "values": {
+            "minItems": 1,
+            "maxItems": 100000,
+            "type": "array",
+            "items": {
+              "type": "number"
+            },
+            "description": "Non-empty list of finite numbers (max 100000)."
+          },
+          "weights": {
+            "minItems": 1,
+            "maxItems": 100000,
+            "type": "array",
+            "items": {
+              "type": "number"
+            },
+            "description": "Weights, same length as values."
+          }
+        },
+        "required": [
+          "values",
+          "weights"
+        ],
+        "additionalProperties": false
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "number"
+          },
+          "weightSum": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "result",
+          "weightSum"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "math.sum",
+      "moduleVersion": "1.0.0",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "values": {
+            "minItems": 1,
+            "maxItems": 100000,
+            "type": "array",
+            "items": {
+              "type": "number"
+            },
+            "description": "Non-empty list of finite numbers (max 100000)."
+          }
+        },
+        "required": [
+          "values"
+        ],
+        "additionalProperties": false
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "number"
+          },
+          "count": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          }
+        },
+        "required": [
+          "result",
+          "count"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "math.min",
+      "moduleVersion": "1.0.0",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "values": {
+            "minItems": 1,
+            "maxItems": 100000,
+            "type": "array",
+            "items": {
+              "type": "number"
+            },
+            "description": "Non-empty list of finite numbers (max 100000)."
+          }
+        },
+        "required": [
+          "values"
+        ],
+        "additionalProperties": false
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "number"
+          },
+          "index": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          }
+        },
+        "required": [
+          "result",
+          "index"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "math.max",
+      "moduleVersion": "1.0.0",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "values": {
+            "minItems": 1,
+            "maxItems": 100000,
+            "type": "array",
+            "items": {
+              "type": "number"
+            },
+            "description": "Non-empty list of finite numbers (max 100000)."
+          }
+        },
+        "required": [
+          "values"
+        ],
+        "additionalProperties": false
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "number"
+          },
+          "index": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          }
+        },
+        "required": [
+          "result",
+          "index"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "math.round",
+      "moduleVersion": "1.0.0",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "number",
+            "description": "Number to round."
+          },
+          "decimals": {
+            "default": 0,
+            "description": "Decimal places (negative rounds to tens, hundreds, ...). Default 0.",
+            "type": "integer",
+            "minimum": -15,
+            "maximum": 15
+          },
+          "mode": {
+            "default": "half_up",
+            "description": "Rounding mode. Default half_up (half away from zero).",
+            "type": "string",
+            "enum": [
+              "half_up",
+              "half_even",
+              "half_down",
+              "up",
+              "down",
+              "ceil",
+              "floor"
+            ]
+          }
+        },
+        "required": [
+          "value"
+        ],
+        "additionalProperties": false
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "number"
+          },
+          "decimals": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          },
+          "mode": {
+            "type": "string",
+            "enum": [
+              "half_up",
+              "half_even",
+              "half_down",
+              "up",
+              "down",
+              "ceil",
+              "floor"
+            ]
+          }
+        },
+        "required": [
+          "result",
+          "decimals",
+          "mode"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "math.power",
+      "moduleVersion": "1.0.0",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "base": {
+            "type": "number",
+            "description": "Base."
+          },
+          "exponent": {
+            "type": "number",
+            "description": "Exponent."
+          }
+        },
+        "required": [
+          "base",
+          "exponent"
+        ],
+        "additionalProperties": false
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "result"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "math.root",
+      "moduleVersion": "1.0.0",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "number",
+            "description": "Radicand."
+          },
+          "degree": {
+            "default": 2,
+            "description": "Root degree. Default 2 (square root).",
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 1000
+          }
+        },
+        "required": [
+          "value"
+        ],
+        "additionalProperties": false
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "number"
+          },
+          "degree": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          }
+        },
+        "required": [
+          "result",
+          "degree"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "finance.compound_interest",
+      "moduleVersion": "1.0.0",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "principal": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string",
+                "pattern": "^-?\\d{1,16}(\\.\\d{1,20})?$"
+              }
+            ],
+            "description": "Initial deposit. Number or exact decimal string. Positive magnitude."
+          },
+          "annualRatePercent": {
+            "type": "number",
+            "exclusiveMinimum": -100,
+            "maximum": 10000,
+            "description": "Annual interest rate in PERCENT (5 means 5%, not 0.05). Must be greater than -100."
+          },
+          "rateType": {
+            "type": "string",
+            "enum": [
+              "nominal",
+              "effective"
+            ],
+            "description": "Required. \"nominal\": annual rate r is split evenly across compounding periods (r / compoundingPerYear, like APR). \"effective\": annual rate already includes compounding (like APY/AER); the result does not depend on compoundingPerYear."
+          },
+          "compoundingPerYear": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 366,
+            "description": "Required. Compounding periods per year: 1 annual, 2 semiannual, 4 quarterly, 12 monthly, 52 weekly, 365 daily."
+          },
+          "years": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1000,
+            "description": "Duration in years (may be fractional, e.g. 1.5)."
+          },
+          "scale": {
+            "default": 2,
+            "description": "Decimal places of monetary results. Default 2. Use 0 for currencies without minor units (JPY).",
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 10
+          },
+          "roundingMode": {
+            "default": "half_up",
+            "description": "Rounding mode applied only to final results. Default half_up (half away from zero, like Excel ROUND).",
+            "type": "string",
+            "enum": [
+              "half_up",
+              "half_even",
+              "half_down",
+              "up",
+              "down",
+              "ceil",
+              "floor"
+            ]
+          },
+          "currency": {
+            "description": "Optional ISO 4217 currency code. Adds `currency` and a `formatted` string to the output.",
+            "type": "string",
+            "pattern": "^[A-Z]{3}$"
+          }
+        },
+        "required": [
+          "principal",
+          "annualRatePercent",
+          "rateType",
+          "compoundingPerYear",
+          "years"
+        ],
+        "additionalProperties": false
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "number",
+            "description": "Future value (principal + interest), rounded to `scale`."
+          },
+          "resultDecimal": {
+            "type": "string",
+            "description": "Main result as an exact decimal string with `scale` decimals."
+          },
+          "scale": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          },
+          "roundingMode": {
+            "type": "string",
+            "enum": [
+              "half_up",
+              "half_even",
+              "half_down",
+              "up",
+              "down",
+              "ceil",
+              "floor"
+            ]
+          },
+          "internalPrecision": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991,
+            "description": "Significant digits used for intermediate calculations."
+          },
+          "currency": {
+            "type": "string"
+          },
+          "formatted": {
+            "description": "Human-readable main result, e.g. \"€18,472.39\".",
+            "type": "string"
+          },
+          "interest": {
+            "type": "number",
+            "description": "Interest earned, rounded to `scale`."
+          },
+          "periods": {
+            "type": "number",
+            "description": "Number of compounding periods."
+          },
+          "periodicRatePercent": {
+            "type": "number",
+            "description": "Interest rate per period in percent (10 decimals)."
+          },
+          "effectiveAnnualRatePercent": {
+            "type": "number",
+            "description": "Effective annual rate (APY) in percent (10 decimals)."
+          }
+        },
+        "required": [
+          "result",
+          "resultDecimal",
+          "scale",
+          "roundingMode",
+          "internalPrecision",
+          "interest",
+          "periods",
+          "periodicRatePercent",
+          "effectiveAnnualRatePercent"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "finance.simple_interest",
+      "moduleVersion": "1.0.0",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "principal": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string",
+                "pattern": "^-?\\d{1,16}(\\.\\d{1,20})?$"
+              }
+            ],
+            "description": "Principal. Number or exact decimal string. Positive magnitude."
+          },
+          "annualRatePercent": {
+            "type": "number",
+            "exclusiveMinimum": -100,
+            "maximum": 10000,
+            "description": "Annual interest rate in PERCENT (5 means 5%, not 0.05). Must be greater than -100."
+          },
+          "years": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1000,
+            "description": "Duration in years (may be fractional, e.g. 1.5)."
+          },
+          "days": {
+            "description": "Number of days (requires dayCount).",
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 366000
+          },
+          "dayCount": {
+            "description": "Day-count convention used with `days`.",
+            "type": "string",
+            "enum": [
+              "actual_360",
+              "actual_365"
+            ]
+          },
+          "scale": {
+            "default": 2,
+            "description": "Decimal places of monetary results. Default 2. Use 0 for currencies without minor units (JPY).",
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 10
+          },
+          "roundingMode": {
+            "default": "half_up",
+            "description": "Rounding mode applied only to final results. Default half_up (half away from zero, like Excel ROUND).",
+            "type": "string",
+            "enum": [
+              "half_up",
+              "half_even",
+              "half_down",
+              "up",
+              "down",
+              "ceil",
+              "floor"
+            ]
+          },
+          "currency": {
+            "description": "Optional ISO 4217 currency code. Adds `currency` and a `formatted` string to the output.",
+            "type": "string",
+            "pattern": "^[A-Z]{3}$"
+          }
+        },
+        "required": [
+          "principal",
+          "annualRatePercent"
+        ],
+        "additionalProperties": false
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "number",
+            "description": "Interest amount, rounded to `scale`."
+          },
+          "resultDecimal": {
+            "type": "string",
+            "description": "Main result as an exact decimal string with `scale` decimals."
+          },
+          "scale": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          },
+          "roundingMode": {
+            "type": "string",
+            "enum": [
+              "half_up",
+              "half_even",
+              "half_down",
+              "up",
+              "down",
+              "ceil",
+              "floor"
+            ]
+          },
+          "internalPrecision": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991,
+            "description": "Significant digits used for intermediate calculations."
+          },
+          "currency": {
+            "type": "string"
+          },
+          "formatted": {
+            "description": "Human-readable main result, e.g. \"€18,472.39\".",
+            "type": "string"
+          },
+          "totalAmount": {
+            "type": "number",
+            "description": "principal + interest, rounded to `scale`."
+          },
+          "yearFraction": {
+            "type": "number",
+            "description": "Time in years used in the calculation."
+          },
+          "dayCount": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "actual_360",
+                  "actual_365"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "result",
+          "resultDecimal",
+          "scale",
+          "roundingMode",
+          "internalPrecision",
+          "totalAmount",
+          "yearFraction",
+          "dayCount"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "finance.future_value",
+      "moduleVersion": "1.0.0",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "presentValue": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string",
+                "pattern": "^-?\\d{1,16}(\\.\\d{1,20})?$"
+              }
+            ],
+            "description": "Amount today. Number or exact decimal string. Positive magnitude."
+          },
+          "annualRatePercent": {
+            "type": "number",
+            "exclusiveMinimum": -100,
+            "maximum": 10000,
+            "description": "Annual interest rate in PERCENT (5 means 5%, not 0.05). Must be greater than -100."
+          },
+          "rateType": {
+            "type": "string",
+            "enum": [
+              "nominal",
+              "effective"
+            ],
+            "description": "Required. \"nominal\": annual rate r is split evenly across compounding periods (r / compoundingPerYear, like APR). \"effective\": annual rate already includes compounding (like APY/AER); the result does not depend on compoundingPerYear."
+          },
+          "compoundingPerYear": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 366,
+            "description": "Required. Compounding periods per year: 1 annual, 2 semiannual, 4 quarterly, 12 monthly, 52 weekly, 365 daily."
+          },
+          "years": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1000,
+            "description": "Duration in years (may be fractional, e.g. 1.5)."
+          },
+          "scale": {
+            "default": 2,
+            "description": "Decimal places of monetary results. Default 2. Use 0 for currencies without minor units (JPY).",
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 10
+          },
+          "roundingMode": {
+            "default": "half_up",
+            "description": "Rounding mode applied only to final results. Default half_up (half away from zero, like Excel ROUND).",
+            "type": "string",
+            "enum": [
+              "half_up",
+              "half_even",
+              "half_down",
+              "up",
+              "down",
+              "ceil",
+              "floor"
+            ]
+          },
+          "currency": {
+            "description": "Optional ISO 4217 currency code. Adds `currency` and a `formatted` string to the output.",
+            "type": "string",
+            "pattern": "^[A-Z]{3}$"
+          }
+        },
+        "required": [
+          "presentValue",
+          "annualRatePercent",
+          "rateType",
+          "compoundingPerYear",
+          "years"
+        ],
+        "additionalProperties": false
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "number",
+            "description": "Main result rounded to `scale`."
+          },
+          "resultDecimal": {
+            "type": "string",
+            "description": "Main result as an exact decimal string with `scale` decimals."
+          },
+          "scale": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          },
+          "roundingMode": {
+            "type": "string",
+            "enum": [
+              "half_up",
+              "half_even",
+              "half_down",
+              "up",
+              "down",
+              "ceil",
+              "floor"
+            ]
+          },
+          "internalPrecision": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991,
+            "description": "Significant digits used for intermediate calculations."
+          },
+          "currency": {
+            "type": "string"
+          },
+          "formatted": {
+            "description": "Human-readable main result, e.g. \"€18,472.39\".",
+            "type": "string"
+          },
+          "periods": {
+            "type": "number"
+          },
+          "periodicRatePercent": {
+            "type": "number",
+            "description": "Interest rate per period in percent (10 decimals)."
+          },
+          "effectiveAnnualRatePercent": {
+            "type": "number",
+            "description": "Effective annual rate (APY) in percent (10 decimals)."
+          }
+        },
+        "required": [
+          "result",
+          "resultDecimal",
+          "scale",
+          "roundingMode",
+          "internalPrecision",
+          "periods",
+          "periodicRatePercent",
+          "effectiveAnnualRatePercent"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "finance.present_value",
+      "moduleVersion": "1.0.0",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "futureValue": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string",
+                "pattern": "^-?\\d{1,16}(\\.\\d{1,20})?$"
+              }
+            ],
+            "description": "Amount at the future date. Number or exact decimal string. Positive magnitude."
+          },
+          "annualRatePercent": {
+            "type": "number",
+            "exclusiveMinimum": -100,
+            "maximum": 10000,
+            "description": "Annual interest rate in PERCENT (5 means 5%, not 0.05). Must be greater than -100."
+          },
+          "rateType": {
+            "type": "string",
+            "enum": [
+              "nominal",
+              "effective"
+            ],
+            "description": "Required. \"nominal\": annual rate r is split evenly across compounding periods (r / compoundingPerYear, like APR). \"effective\": annual rate already includes compounding (like APY/AER); the result does not depend on compoundingPerYear."
+          },
+          "compoundingPerYear": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 366,
+            "description": "Required. Compounding periods per year: 1 annual, 2 semiannual, 4 quarterly, 12 monthly, 52 weekly, 365 daily."
+          },
+          "years": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1000,
+            "description": "Duration in years (may be fractional, e.g. 1.5)."
+          },
+          "scale": {
+            "default": 2,
+            "description": "Decimal places of monetary results. Default 2. Use 0 for currencies without minor units (JPY).",
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 10
+          },
+          "roundingMode": {
+            "default": "half_up",
+            "description": "Rounding mode applied only to final results. Default half_up (half away from zero, like Excel ROUND).",
+            "type": "string",
+            "enum": [
+              "half_up",
+              "half_even",
+              "half_down",
+              "up",
+              "down",
+              "ceil",
+              "floor"
+            ]
+          },
+          "currency": {
+            "description": "Optional ISO 4217 currency code. Adds `currency` and a `formatted` string to the output.",
+            "type": "string",
+            "pattern": "^[A-Z]{3}$"
+          }
+        },
+        "required": [
+          "futureValue",
+          "annualRatePercent",
+          "rateType",
+          "compoundingPerYear",
+          "years"
+        ],
+        "additionalProperties": false
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "number",
+            "description": "Main result rounded to `scale`."
+          },
+          "resultDecimal": {
+            "type": "string",
+            "description": "Main result as an exact decimal string with `scale` decimals."
+          },
+          "scale": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          },
+          "roundingMode": {
+            "type": "string",
+            "enum": [
+              "half_up",
+              "half_even",
+              "half_down",
+              "up",
+              "down",
+              "ceil",
+              "floor"
+            ]
+          },
+          "internalPrecision": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991,
+            "description": "Significant digits used for intermediate calculations."
+          },
+          "currency": {
+            "type": "string"
+          },
+          "formatted": {
+            "description": "Human-readable main result, e.g. \"€18,472.39\".",
+            "type": "string"
+          },
+          "discount": {
+            "type": "number",
+            "description": "futureValue - presentValue, rounded to `scale`."
+          },
+          "periods": {
+            "type": "number"
+          },
+          "periodicRatePercent": {
+            "type": "number",
+            "description": "Interest rate per period in percent (10 decimals)."
+          },
+          "effectiveAnnualRatePercent": {
+            "type": "number",
+            "description": "Effective annual rate (APY) in percent (10 decimals)."
+          }
+        },
+        "required": [
+          "result",
+          "resultDecimal",
+          "scale",
+          "roundingMode",
+          "internalPrecision",
+          "discount",
+          "periods",
+          "periodicRatePercent",
+          "effectiveAnnualRatePercent"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "finance.annuity_future_value",
+      "moduleVersion": "1.0.0",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "payment": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string",
+                "pattern": "^-?\\d{1,16}(\\.\\d{1,20})?$"
+              }
+            ],
+            "description": "Amount paid each period. Number or exact decimal string. Positive magnitude."
+          },
+          "annualRatePercent": {
+            "type": "number",
+            "exclusiveMinimum": -100,
+            "maximum": 10000,
+            "description": "Annual interest rate in PERCENT (5 means 5%, not 0.05). Must be greater than -100."
+          },
+          "rateType": {
+            "type": "string",
+            "enum": [
+              "nominal",
+              "effective"
+            ],
+            "description": "Required. \"nominal\": annual rate r is split evenly across compounding periods (r / compoundingPerYear, like APR). \"effective\": annual rate already includes compounding (like APY/AER); the result does not depend on compoundingPerYear."
+          },
+          "compoundingPerYear": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 366,
+            "description": "Required. Compounding periods per year: 1 annual, 2 semiannual, 4 quarterly, 12 monthly, 52 weekly, 365 daily."
+          },
+          "paymentsPerYear": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 366,
+            "description": "Required. Payments per year: 12 for monthly payments, 4 quarterly, 1 annual."
+          },
+          "years": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1000,
+            "description": "Term in years. years * paymentsPerYear must be a whole number."
+          },
+          "paymentTiming": {
+            "type": "string",
+            "enum": [
+              "end",
+              "begin"
+            ],
+            "description": "Required. \"end\": payments at the end of each period (ordinary annuity, typical loans). \"begin\": at the start (annuity due, e.g. rent)."
+          },
+          "scale": {
+            "default": 2,
+            "description": "Decimal places of monetary results. Default 2. Use 0 for currencies without minor units (JPY).",
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 10
+          },
+          "roundingMode": {
+            "default": "half_up",
+            "description": "Rounding mode applied only to final results. Default half_up (half away from zero, like Excel ROUND).",
+            "type": "string",
+            "enum": [
+              "half_up",
+              "half_even",
+              "half_down",
+              "up",
+              "down",
+              "ceil",
+              "floor"
+            ]
+          },
+          "currency": {
+            "description": "Optional ISO 4217 currency code. Adds `currency` and a `formatted` string to the output.",
+            "type": "string",
+            "pattern": "^[A-Z]{3}$"
+          }
+        },
+        "required": [
+          "payment",
+          "annualRatePercent",
+          "rateType",
+          "compoundingPerYear",
+          "paymentsPerYear",
+          "years",
+          "paymentTiming"
+        ],
+        "additionalProperties": false
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "number",
+            "description": "Future value of all payments, rounded to `scale`."
+          },
+          "resultDecimal": {
+            "type": "string",
+            "description": "Main result as an exact decimal string with `scale` decimals."
+          },
+          "scale": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          },
+          "roundingMode": {
+            "type": "string",
+            "enum": [
+              "half_up",
+              "half_even",
+              "half_down",
+              "up",
+              "down",
+              "ceil",
+              "floor"
+            ]
+          },
+          "internalPrecision": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991,
+            "description": "Significant digits used for intermediate calculations."
+          },
+          "currency": {
+            "type": "string"
+          },
+          "formatted": {
+            "description": "Human-readable main result, e.g. \"€18,472.39\".",
+            "type": "string"
+          },
+          "totalContributions": {
+            "type": "number"
+          },
+          "interest": {
+            "type": "number",
+            "description": "result - totalContributions."
+          },
+          "numberOfPayments": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          },
+          "paymentTiming": {
+            "type": "string",
+            "enum": [
+              "end",
+              "begin"
+            ]
+          },
+          "periodicRatePercent": {
+            "type": "number",
+            "description": "Interest rate per period in percent (10 decimals)."
+          },
+          "effectiveAnnualRatePercent": {
+            "type": "number",
+            "description": "Effective annual rate (APY) in percent (10 decimals)."
+          }
+        },
+        "required": [
+          "result",
+          "resultDecimal",
+          "scale",
+          "roundingMode",
+          "internalPrecision",
+          "totalContributions",
+          "interest",
+          "numberOfPayments",
+          "paymentTiming",
+          "periodicRatePercent",
+          "effectiveAnnualRatePercent"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "finance.annuity_present_value",
+      "moduleVersion": "1.0.0",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "payment": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string",
+                "pattern": "^-?\\d{1,16}(\\.\\d{1,20})?$"
+              }
+            ],
+            "description": "Amount paid each period. Number or exact decimal string. Positive magnitude."
+          },
+          "annualRatePercent": {
+            "type": "number",
+            "exclusiveMinimum": -100,
+            "maximum": 10000,
+            "description": "Annual interest rate in PERCENT (5 means 5%, not 0.05). Must be greater than -100."
+          },
+          "rateType": {
+            "type": "string",
+            "enum": [
+              "nominal",
+              "effective"
+            ],
+            "description": "Required. \"nominal\": annual rate r is split evenly across compounding periods (r / compoundingPerYear, like APR). \"effective\": annual rate already includes compounding (like APY/AER); the result does not depend on compoundingPerYear."
+          },
+          "compoundingPerYear": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 366,
+            "description": "Required. Compounding periods per year: 1 annual, 2 semiannual, 4 quarterly, 12 monthly, 52 weekly, 365 daily."
+          },
+          "paymentsPerYear": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 366,
+            "description": "Required. Payments per year: 12 for monthly payments, 4 quarterly, 1 annual."
+          },
+          "years": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1000,
+            "description": "Term in years. years * paymentsPerYear must be a whole number."
+          },
+          "paymentTiming": {
+            "type": "string",
+            "enum": [
+              "end",
+              "begin"
+            ],
+            "description": "Required. \"end\": payments at the end of each period (ordinary annuity, typical loans). \"begin\": at the start (annuity due, e.g. rent)."
+          },
+          "scale": {
+            "default": 2,
+            "description": "Decimal places of monetary results. Default 2. Use 0 for currencies without minor units (JPY).",
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 10
+          },
+          "roundingMode": {
+            "default": "half_up",
+            "description": "Rounding mode applied only to final results. Default half_up (half away from zero, like Excel ROUND).",
+            "type": "string",
+            "enum": [
+              "half_up",
+              "half_even",
+              "half_down",
+              "up",
+              "down",
+              "ceil",
+              "floor"
+            ]
+          },
+          "currency": {
+            "description": "Optional ISO 4217 currency code. Adds `currency` and a `formatted` string to the output.",
+            "type": "string",
+            "pattern": "^[A-Z]{3}$"
+          }
+        },
+        "required": [
+          "payment",
+          "annualRatePercent",
+          "rateType",
+          "compoundingPerYear",
+          "paymentsPerYear",
+          "years",
+          "paymentTiming"
+        ],
+        "additionalProperties": false
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "number",
+            "description": "Present value of all payments, rounded to `scale`."
+          },
+          "resultDecimal": {
+            "type": "string",
+            "description": "Main result as an exact decimal string with `scale` decimals."
+          },
+          "scale": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          },
+          "roundingMode": {
+            "type": "string",
+            "enum": [
+              "half_up",
+              "half_even",
+              "half_down",
+              "up",
+              "down",
+              "ceil",
+              "floor"
+            ]
+          },
+          "internalPrecision": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991,
+            "description": "Significant digits used for intermediate calculations."
+          },
+          "currency": {
+            "type": "string"
+          },
+          "formatted": {
+            "description": "Human-readable main result, e.g. \"€18,472.39\".",
+            "type": "string"
+          },
+          "totalPayments": {
+            "type": "number"
+          },
+          "numberOfPayments": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          },
+          "paymentTiming": {
+            "type": "string",
+            "enum": [
+              "end",
+              "begin"
+            ]
+          },
+          "periodicRatePercent": {
+            "type": "number",
+            "description": "Interest rate per period in percent (10 decimals)."
+          },
+          "effectiveAnnualRatePercent": {
+            "type": "number",
+            "description": "Effective annual rate (APY) in percent (10 decimals)."
+          }
+        },
+        "required": [
+          "result",
+          "resultDecimal",
+          "scale",
+          "roundingMode",
+          "internalPrecision",
+          "totalPayments",
+          "numberOfPayments",
+          "paymentTiming",
+          "periodicRatePercent",
+          "effectiveAnnualRatePercent"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "finance.loan_payment",
+      "moduleVersion": "1.0.0",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "principal": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string",
+                "pattern": "^-?\\d{1,16}(\\.\\d{1,20})?$"
+              }
+            ],
+            "description": "Loan amount borrowed. Number or exact decimal string. Positive magnitude."
+          },
+          "annualRatePercent": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 10000,
+            "description": "Annual interest rate in PERCENT (6.5 means 6.5%). Must be >= 0."
+          },
+          "rateType": {
+            "type": "string",
+            "enum": [
+              "nominal",
+              "effective"
+            ],
+            "description": "Required. \"nominal\": annual rate r is split evenly across compounding periods (r / compoundingPerYear, like APR). \"effective\": annual rate already includes compounding (like APY/AER); the result does not depend on compoundingPerYear."
+          },
+          "compoundingPerYear": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 366,
+            "description": "Required. Compounding periods per year: 1 annual, 2 semiannual, 4 quarterly, 12 monthly, 52 weekly, 365 daily."
+          },
+          "paymentsPerYear": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 366,
+            "description": "Required. Payments per year: 12 for monthly payments, 4 quarterly, 1 annual."
+          },
+          "years": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1000,
+            "description": "Loan term in years. years * paymentsPerYear must be a whole number."
+          },
+          "paymentTiming": {
+            "type": "string",
+            "enum": [
+              "end",
+              "begin"
+            ],
+            "description": "Required. \"end\": payments at the end of each period (ordinary annuity, typical loans). \"begin\": at the start (annuity due, e.g. rent)."
+          },
+          "scale": {
+            "default": 2,
+            "description": "Decimal places of monetary results. Default 2. Use 0 for currencies without minor units (JPY).",
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 10
+          },
+          "roundingMode": {
+            "default": "half_up",
+            "description": "Rounding mode applied only to final results. Default half_up (half away from zero, like Excel ROUND).",
+            "type": "string",
+            "enum": [
+              "half_up",
+              "half_even",
+              "half_down",
+              "up",
+              "down",
+              "ceil",
+              "floor"
+            ]
+          },
+          "currency": {
+            "description": "Optional ISO 4217 currency code. Adds `currency` and a `formatted` string to the output.",
+            "type": "string",
+            "pattern": "^[A-Z]{3}$"
+          }
+        },
+        "required": [
+          "principal",
+          "annualRatePercent",
+          "rateType",
+          "compoundingPerYear",
+          "paymentsPerYear",
+          "years",
+          "paymentTiming"
+        ],
+        "additionalProperties": false
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "number",
+            "description": "Level payment per period, rounded to `scale`."
+          },
+          "resultDecimal": {
+            "type": "string",
+            "description": "Main result as an exact decimal string with `scale` decimals."
+          },
+          "scale": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          },
+          "roundingMode": {
+            "type": "string",
+            "enum": [
+              "half_up",
+              "half_even",
+              "half_down",
+              "up",
+              "down",
+              "ceil",
+              "floor"
+            ]
+          },
+          "internalPrecision": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991,
+            "description": "Significant digits used for intermediate calculations."
+          },
+          "currency": {
+            "type": "string"
+          },
+          "formatted": {
+            "description": "Human-readable main result, e.g. \"€18,472.39\".",
+            "type": "string"
+          },
+          "numberOfPayments": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          },
+          "finalPayment": {
+            "type": "number",
+            "description": "Last payment after rounding adjustment."
+          },
+          "totalOfPayments": {
+            "type": "number"
+          },
+          "totalInterest": {
+            "type": "number"
+          },
+          "paymentTiming": {
+            "type": "string",
+            "enum": [
+              "end",
+              "begin"
+            ]
+          },
+          "periodicRatePercent": {
+            "type": "number",
+            "description": "Interest rate per period in percent (10 decimals)."
+          },
+          "effectiveAnnualRatePercent": {
+            "type": "number",
+            "description": "Effective annual rate (APY) in percent (10 decimals)."
+          }
+        },
+        "required": [
+          "result",
+          "resultDecimal",
+          "scale",
+          "roundingMode",
+          "internalPrecision",
+          "numberOfPayments",
+          "finalPayment",
+          "totalOfPayments",
+          "totalInterest",
+          "paymentTiming",
+          "periodicRatePercent",
+          "effectiveAnnualRatePercent"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "finance.loan_amortization",
+      "moduleVersion": "1.0.0",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "principal": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string",
+                "pattern": "^-?\\d{1,16}(\\.\\d{1,20})?$"
+              }
+            ],
+            "description": "Loan amount borrowed. Number or exact decimal string. Positive magnitude."
+          },
+          "annualRatePercent": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 10000,
+            "description": "Annual interest rate in PERCENT (6.5 means 6.5%). Must be >= 0."
+          },
+          "rateType": {
+            "type": "string",
+            "enum": [
+              "nominal",
+              "effective"
+            ],
+            "description": "Required. \"nominal\": annual rate r is split evenly across compounding periods (r / compoundingPerYear, like APR). \"effective\": annual rate already includes compounding (like APY/AER); the result does not depend on compoundingPerYear."
+          },
+          "compoundingPerYear": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 366,
+            "description": "Required. Compounding periods per year: 1 annual, 2 semiannual, 4 quarterly, 12 monthly, 52 weekly, 365 daily."
+          },
+          "paymentsPerYear": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 366,
+            "description": "Required. Payments per year: 12 for monthly payments, 4 quarterly, 1 annual."
+          },
+          "years": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1000,
+            "description": "Loan term in years. years * paymentsPerYear must be a whole number."
+          },
+          "paymentTiming": {
+            "type": "string",
+            "enum": [
+              "end",
+              "begin"
+            ],
+            "description": "Required. \"end\": payments at the end of each period (ordinary annuity, typical loans). \"begin\": at the start (annuity due, e.g. rent)."
+          },
+          "scale": {
+            "default": 2,
+            "description": "Decimal places of monetary results. Default 2. Use 0 for currencies without minor units (JPY).",
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 10
+          },
+          "roundingMode": {
+            "default": "half_up",
+            "description": "Rounding mode applied only to final results. Default half_up (half away from zero, like Excel ROUND).",
+            "type": "string",
+            "enum": [
+              "half_up",
+              "half_even",
+              "half_down",
+              "up",
+              "down",
+              "ceil",
+              "floor"
+            ]
+          },
+          "currency": {
+            "description": "Optional ISO 4217 currency code. Adds `currency` and a `formatted` string to the output.",
+            "type": "string",
+            "pattern": "^[A-Z]{3}$"
+          }
+        },
+        "required": [
+          "principal",
+          "annualRatePercent",
+          "rateType",
+          "compoundingPerYear",
+          "paymentsPerYear",
+          "years",
+          "paymentTiming"
+        ],
+        "additionalProperties": false
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "number",
+            "description": "Level payment per period, rounded to `scale`."
+          },
+          "resultDecimal": {
+            "type": "string",
+            "description": "Main result as an exact decimal string with `scale` decimals."
+          },
+          "scale": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          },
+          "roundingMode": {
+            "type": "string",
+            "enum": [
+              "half_up",
+              "half_even",
+              "half_down",
+              "up",
+              "down",
+              "ceil",
+              "floor"
+            ]
+          },
+          "internalPrecision": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991,
+            "description": "Significant digits used for intermediate calculations."
+          },
+          "currency": {
+            "type": "string"
+          },
+          "formatted": {
+            "description": "Human-readable main result, e.g. \"€18,472.39\".",
+            "type": "string"
+          },
+          "numberOfPayments": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          },
+          "finalPayment": {
+            "type": "number",
+            "description": "Last payment after rounding adjustment."
+          },
+          "totalOfPayments": {
+            "type": "number"
+          },
+          "totalInterest": {
+            "type": "number"
+          },
+          "paymentTiming": {
+            "type": "string",
+            "enum": [
+              "end",
+              "begin"
+            ]
+          },
+          "periodicRatePercent": {
+            "type": "number",
+            "description": "Interest rate per period in percent (10 decimals)."
+          },
+          "effectiveAnnualRatePercent": {
+            "type": "number",
+            "description": "Effective annual rate (APY) in percent (10 decimals)."
+          },
+          "schedule": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "period": {
+                  "type": "integer",
+                  "minimum": -9007199254740991,
+                  "maximum": 9007199254740991
+                },
+                "payment": {
+                  "type": "number"
+                },
+                "interest": {
+                  "type": "number"
+                },
+                "principal": {
+                  "type": "number"
+                },
+                "balance": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "period",
+                "payment",
+                "interest",
+                "principal",
+                "balance"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "result",
+          "resultDecimal",
+          "scale",
+          "roundingMode",
+          "internalPrecision",
+          "numberOfPayments",
+          "finalPayment",
+          "totalOfPayments",
+          "totalInterest",
+          "paymentTiming",
+          "periodicRatePercent",
+          "effectiveAnnualRatePercent",
+          "schedule"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "finance.total_interest",
+      "moduleVersion": "1.0.0",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "principal": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string",
+                "pattern": "^-?\\d{1,16}(\\.\\d{1,20})?$"
+              }
+            ],
+            "description": "Loan amount borrowed. Number or exact decimal string. Positive magnitude."
+          },
+          "annualRatePercent": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 10000,
+            "description": "Annual interest rate in PERCENT (6.5 means 6.5%). Must be >= 0."
+          },
+          "rateType": {
+            "type": "string",
+            "enum": [
+              "nominal",
+              "effective"
+            ],
+            "description": "Required. \"nominal\": annual rate r is split evenly across compounding periods (r / compoundingPerYear, like APR). \"effective\": annual rate already includes compounding (like APY/AER); the result does not depend on compoundingPerYear."
+          },
+          "compoundingPerYear": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 366,
+            "description": "Required. Compounding periods per year: 1 annual, 2 semiannual, 4 quarterly, 12 monthly, 52 weekly, 365 daily."
+          },
+          "paymentsPerYear": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 366,
+            "description": "Required. Payments per year: 12 for monthly payments, 4 quarterly, 1 annual."
+          },
+          "years": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1000,
+            "description": "Loan term in years. years * paymentsPerYear must be a whole number."
+          },
+          "paymentTiming": {
+            "type": "string",
+            "enum": [
+              "end",
+              "begin"
+            ],
+            "description": "Required. \"end\": payments at the end of each period (ordinary annuity, typical loans). \"begin\": at the start (annuity due, e.g. rent)."
+          },
+          "scale": {
+            "default": 2,
+            "description": "Decimal places of monetary results. Default 2. Use 0 for currencies without minor units (JPY).",
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 10
+          },
+          "roundingMode": {
+            "default": "half_up",
+            "description": "Rounding mode applied only to final results. Default half_up (half away from zero, like Excel ROUND).",
+            "type": "string",
+            "enum": [
+              "half_up",
+              "half_even",
+              "half_down",
+              "up",
+              "down",
+              "ceil",
+              "floor"
+            ]
+          },
+          "currency": {
+            "description": "Optional ISO 4217 currency code. Adds `currency` and a `formatted` string to the output.",
+            "type": "string",
+            "pattern": "^[A-Z]{3}$"
+          }
+        },
+        "required": [
+          "principal",
+          "annualRatePercent",
+          "rateType",
+          "compoundingPerYear",
+          "paymentsPerYear",
+          "years",
+          "paymentTiming"
+        ],
+        "additionalProperties": false
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "number",
+            "description": "Total interest, rounded to `scale`."
+          },
+          "resultDecimal": {
+            "type": "string",
+            "description": "Main result as an exact decimal string with `scale` decimals."
+          },
+          "scale": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          },
+          "roundingMode": {
+            "type": "string",
+            "enum": [
+              "half_up",
+              "half_even",
+              "half_down",
+              "up",
+              "down",
+              "ceil",
+              "floor"
+            ]
+          },
+          "internalPrecision": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991,
+            "description": "Significant digits used for intermediate calculations."
+          },
+          "currency": {
+            "type": "string"
+          },
+          "formatted": {
+            "description": "Human-readable main result, e.g. \"€18,472.39\".",
+            "type": "string"
+          },
+          "payment": {
+            "type": "number"
+          },
+          "numberOfPayments": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          },
+          "finalPayment": {
+            "type": "number",
+            "description": "Last payment after rounding adjustment."
+          },
+          "totalOfPayments": {
+            "type": "number"
+          },
+          "totalInterest": {
+            "type": "number"
+          },
+          "paymentTiming": {
+            "type": "string",
+            "enum": [
+              "end",
+              "begin"
+            ]
+          },
+          "periodicRatePercent": {
+            "type": "number",
+            "description": "Interest rate per period in percent (10 decimals)."
+          },
+          "effectiveAnnualRatePercent": {
+            "type": "number",
+            "description": "Effective annual rate (APY) in percent (10 decimals)."
+          }
+        },
+        "required": [
+          "result",
+          "resultDecimal",
+          "scale",
+          "roundingMode",
+          "internalPrecision",
+          "payment",
+          "numberOfPayments",
+          "finalPayment",
+          "totalOfPayments",
+          "totalInterest",
+          "paymentTiming",
+          "periodicRatePercent",
+          "effectiveAnnualRatePercent"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "finance.npv",
+      "moduleVersion": "1.0.0",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "ratePercent": {
+            "type": "number",
+            "exclusiveMinimum": -100,
+            "maximum": 10000,
+            "description": "Discount rate per period in PERCENT (10 means 10%)."
+          },
+          "cashFlows": {
+            "minItems": 1,
+            "maxItems": 1000,
+            "type": "array",
+            "items": {
+              "anyOf": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "string",
+                  "pattern": "^-?\\d{1,16}(\\.\\d{1,20})?$"
+                }
+              ],
+              "description": "Signed cash flow: negative = money paid out (investment), positive = money received."
+            },
+            "description": "Signed cash flows at equally spaced periods, in chronological order (max 1000). Negative = outflow, positive = inflow. Numbers or exact decimal strings."
+          },
+          "firstCashFlowAt": {
+            "type": "string",
+            "enum": [
+              "now",
+              "end_of_first_period"
+            ],
+            "description": "Required. \"now\": cashFlows[0] is at time 0 and not discounted. \"end_of_first_period\": cashFlows[0] is discounted one period (Excel NPV)."
+          },
+          "scale": {
+            "default": 2,
+            "description": "Decimal places of monetary results. Default 2. Use 0 for currencies without minor units (JPY).",
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 10
+          },
+          "roundingMode": {
+            "default": "half_up",
+            "description": "Rounding mode applied only to final results. Default half_up (half away from zero, like Excel ROUND).",
+            "type": "string",
+            "enum": [
+              "half_up",
+              "half_even",
+              "half_down",
+              "up",
+              "down",
+              "ceil",
+              "floor"
+            ]
+          },
+          "currency": {
+            "description": "Optional ISO 4217 currency code. Adds `currency` and a `formatted` string to the output.",
+            "type": "string",
+            "pattern": "^[A-Z]{3}$"
+          }
+        },
+        "required": [
+          "ratePercent",
+          "cashFlows",
+          "firstCashFlowAt"
+        ],
+        "additionalProperties": false
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "number",
+            "description": "Net present value, rounded to `scale`. Positive means the investment beats the discount rate."
+          },
+          "resultDecimal": {
+            "type": "string",
+            "description": "Main result as an exact decimal string with `scale` decimals."
+          },
+          "scale": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          },
+          "roundingMode": {
+            "type": "string",
+            "enum": [
+              "half_up",
+              "half_even",
+              "half_down",
+              "up",
+              "down",
+              "ceil",
+              "floor"
+            ]
+          },
+          "internalPrecision": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991,
+            "description": "Significant digits used for intermediate calculations."
+          },
+          "currency": {
+            "type": "string"
+          },
+          "formatted": {
+            "description": "Human-readable main result, e.g. \"€18,472.39\".",
+            "type": "string"
+          },
+          "discountedCashFlows": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            },
+            "description": "Present value of each cash flow, rounded to `scale`."
+          },
+          "firstCashFlowAt": {
+            "type": "string",
+            "enum": [
+              "now",
+              "end_of_first_period"
+            ]
+          }
+        },
+        "required": [
+          "result",
+          "resultDecimal",
+          "scale",
+          "roundingMode",
+          "internalPrecision",
+          "discountedCashFlows",
+          "firstCashFlowAt"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "finance.irr",
+      "moduleVersion": "1.0.0",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "cashFlows": {
+            "minItems": 2,
+            "maxItems": 1000,
+            "type": "array",
+            "items": {
+              "anyOf": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "string",
+                  "pattern": "^-?\\d{1,16}(\\.\\d{1,20})?$"
+                }
+              ],
+              "description": "Signed cash flow: negative = money paid out (investment), positive = money received."
+            },
+            "description": "Signed cash flows at equally spaced periods, in chronological order (max 1000). Negative = outflow, positive = inflow. Numbers or exact decimal strings."
+          },
+          "periodsPerYear": {
+            "description": "Optional. Periods per year of the cash-flow spacing (12 for monthly) to compute the effective annual rate.",
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 366
+          },
+          "decimals": {
+            "default": 6,
+            "description": "Decimal places of percentage results. Default 6.",
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 12
+          }
+        },
+        "required": [
+          "cashFlows"
+        ],
+        "additionalProperties": false
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "number",
+            "description": "IRR per period in percent (8.5 means 8.5%)."
+          },
+          "resultDecimal": {
+            "type": "string"
+          },
+          "solutions": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            },
+            "description": "All IRRs found (percent per period), ascending."
+          },
+          "multipleSolutions": {
+            "type": "boolean"
+          },
+          "effectiveAnnualRatePercent": {
+            "description": "(1 + irr)^periodsPerYear - 1 in percent, or null without periodsPerYear.",
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "decimals": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          },
+          "internalPrecision": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          },
+          "method": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "result",
+          "resultDecimal",
+          "solutions",
+          "multipleSolutions",
+          "effectiveAnnualRatePercent",
+          "decimals",
+          "internalPrecision",
+          "method"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "statistics.mean",
+      "moduleVersion": "1.0.0",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "values": {
+            "minItems": 1,
+            "maxItems": 1000000,
+            "type": "array",
+            "items": {
+              "type": "number"
+            },
+            "description": "Sample data: non-empty list of finite numbers (max 1000000). NaN/Infinity are not accepted."
+          }
+        },
+        "required": [
+          "values"
+        ],
+        "additionalProperties": false
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "number"
+          },
+          "count": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          }
+        },
+        "required": [
+          "result",
+          "count"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "statistics.median",
+      "moduleVersion": "1.0.0",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "values": {
+            "minItems": 1,
+            "maxItems": 1000000,
+            "type": "array",
+            "items": {
+              "type": "number"
+            },
+            "description": "Sample data: non-empty list of finite numbers (max 1000000). NaN/Infinity are not accepted."
+          }
+        },
+        "required": [
+          "values"
+        ],
+        "additionalProperties": false
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "number"
+          },
+          "count": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          }
+        },
+        "required": [
+          "result",
+          "count"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "statistics.mode",
+      "moduleVersion": "1.0.0",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "values": {
+            "minItems": 1,
+            "maxItems": 1000000,
+            "type": "array",
+            "items": {
+              "type": "number"
+            },
+            "description": "Sample data: non-empty list of finite numbers (max 1000000). NaN/Infinity are not accepted."
+          }
+        },
+        "required": [
+          "values"
+        ],
+        "additionalProperties": false
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "modes": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
+          },
+          "frequency": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991,
+            "description": "Occurrences of each mode."
+          },
+          "hasMode": {
+            "type": "boolean"
+          },
+          "count": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          }
+        },
+        "required": [
+          "modes",
+          "frequency",
+          "hasMode",
+          "count"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "statistics.variance",
+      "moduleVersion": "1.0.0",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "values": {
+            "minItems": 1,
+            "maxItems": 1000000,
+            "type": "array",
+            "items": {
+              "type": "number"
+            },
+            "description": "Sample data: non-empty list of finite numbers (max 1000000). NaN/Infinity are not accepted."
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "population",
+              "sample"
+            ],
+            "description": "Required. \"population\": divide by n (data is the whole population). \"sample\": divide by n - 1 (Bessel correction; data is a sample of a larger population)."
+          }
+        },
+        "required": [
+          "values",
+          "kind"
+        ],
+        "additionalProperties": false
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "number"
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "population",
+              "sample"
+            ]
+          },
+          "count": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          },
+          "mean": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "result",
+          "kind",
+          "count",
+          "mean"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "statistics.standard_deviation",
+      "moduleVersion": "1.0.0",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "values": {
+            "minItems": 1,
+            "maxItems": 1000000,
+            "type": "array",
+            "items": {
+              "type": "number"
+            },
+            "description": "Sample data: non-empty list of finite numbers (max 1000000). NaN/Infinity are not accepted."
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "population",
+              "sample"
+            ],
+            "description": "Required. \"population\": divide by n (data is the whole population). \"sample\": divide by n - 1 (Bessel correction; data is a sample of a larger population)."
+          }
+        },
+        "required": [
+          "values",
+          "kind"
+        ],
+        "additionalProperties": false
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "number"
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "population",
+              "sample"
+            ]
+          },
+          "count": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          },
+          "mean": {
+            "type": "number"
+          },
+          "variance": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "result",
+          "kind",
+          "count",
+          "mean",
+          "variance"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "statistics.percentile",
+      "moduleVersion": "1.0.0",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "values": {
+            "minItems": 1,
+            "maxItems": 1000000,
+            "type": "array",
+            "items": {
+              "type": "number"
+            },
+            "description": "Sample data: non-empty list of finite numbers (max 1000000). NaN/Infinity are not accepted."
+          },
+          "percentile": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 100,
+            "description": "Percentile on a 0-100 scale."
+          },
+          "method": {
+            "default": "linear",
+            "description": "Interpolation method. Default \"linear\" (Excel PERCENTILE.INC).",
+            "type": "string",
+            "enum": [
+              "linear",
+              "exclusive",
+              "nearest_rank",
+              "lower",
+              "higher",
+              "midpoint",
+              "nearest"
+            ]
+          }
+        },
+        "required": [
+          "values",
+          "percentile"
+        ],
+        "additionalProperties": false
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "number"
+          },
+          "percentile": {
+            "type": "number"
+          },
+          "method": {
+            "type": "string",
+            "enum": [
+              "linear",
+              "exclusive",
+              "nearest_rank",
+              "lower",
+              "higher",
+              "midpoint",
+              "nearest"
+            ]
+          },
+          "count": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          }
+        },
+        "required": [
+          "result",
+          "percentile",
+          "method",
+          "count"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "statistics.min",
+      "moduleVersion": "1.0.0",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "values": {
+            "minItems": 1,
+            "maxItems": 1000000,
+            "type": "array",
+            "items": {
+              "type": "number"
+            },
+            "description": "Sample data: non-empty list of finite numbers (max 1000000). NaN/Infinity are not accepted."
+          }
+        },
+        "required": [
+          "values"
+        ],
+        "additionalProperties": false
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "number"
+          },
+          "count": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          }
+        },
+        "required": [
+          "result",
+          "count"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "statistics.max",
+      "moduleVersion": "1.0.0",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "values": {
+            "minItems": 1,
+            "maxItems": 1000000,
+            "type": "array",
+            "items": {
+              "type": "number"
+            },
+            "description": "Sample data: non-empty list of finite numbers (max 1000000). NaN/Infinity are not accepted."
+          }
+        },
+        "required": [
+          "values"
+        ],
+        "additionalProperties": false
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "number"
+          },
+          "count": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          }
+        },
+        "required": [
+          "result",
+          "count"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "statistics.sum",
+      "moduleVersion": "1.0.0",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "values": {
+            "minItems": 1,
+            "maxItems": 1000000,
+            "type": "array",
+            "items": {
+              "type": "number"
+            },
+            "description": "Sample data: non-empty list of finite numbers (max 1000000). NaN/Infinity are not accepted."
+          }
+        },
+        "required": [
+          "values"
+        ],
+        "additionalProperties": false
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "number"
+          },
+          "count": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          }
+        },
+        "required": [
+          "result",
+          "count"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "datetime.date_difference",
+      "moduleVersion": "1.0.0",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "start": {
+            "type": "string",
+            "minLength": 10,
+            "maxLength": 40,
+            "description": "Start date. Format YYYY-MM-DD, or ISO 8601 date-time with offset (2026-03-15T09:30:00+01:00 / ...Z)."
+          },
+          "end": {
+            "type": "string",
+            "minLength": 10,
+            "maxLength": 40,
+            "description": "End date. Format YYYY-MM-DD, or ISO 8601 date-time with offset (2026-03-15T09:30:00+01:00 / ...Z)."
+          },
+          "timeZone": {
+            "description": "Optional IANA time zone (e.g. \"Europe/Berlin\"). Used to interpret date-time inputs as local wall-clock time.",
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 64
+          }
+        },
+        "required": [
+          "start",
+          "end"
+        ],
+        "additionalProperties": false
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "days": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991,
+            "description": "Calendar days from start to end (signed)."
+          },
+          "weeks": {
+            "type": "number",
+            "description": "days / 7, rounded to 6 decimals."
+          },
+          "calendar": {
+            "type": "object",
+            "properties": {
+              "years": {
+                "type": "integer",
+                "minimum": -9007199254740991,
+                "maximum": 9007199254740991
+              },
+              "months": {
+                "type": "integer",
+                "minimum": -9007199254740991,
+                "maximum": 9007199254740991
+              },
+              "days": {
+                "type": "integer",
+                "minimum": -9007199254740991,
+                "maximum": 9007199254740991
+              }
+            },
+            "required": [
+              "years",
+              "months",
+              "days"
+            ],
+            "additionalProperties": false
+          },
+          "totalMonths": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991,
+            "description": "Whole months between the dates (signed)."
+          },
+          "elapsed": {
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "milliseconds": {
+                    "type": "number"
+                  },
+                  "seconds": {
+                    "type": "number"
+                  },
+                  "minutes": {
+                    "type": "number"
+                  },
+                  "hours": {
+                    "type": "number"
+                  },
+                  "days": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "milliseconds",
+                  "seconds",
+                  "minutes",
+                  "hours",
+                  "days"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Exact elapsed time; only when both inputs are date-times."
+          },
+          "start": {
+            "type": "string"
+          },
+          "end": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "days",
+          "weeks",
+          "calendar",
+          "totalMonths",
+          "elapsed",
+          "start",
+          "end"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "datetime.add_days",
+      "moduleVersion": "1.0.0",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "date": {
+            "type": "string",
+            "minLength": 10,
+            "maxLength": 40,
+            "description": "Start date. Format YYYY-MM-DD, or ISO 8601 date-time with offset (2026-03-15T09:30:00+01:00 / ...Z)."
+          },
+          "days": {
+            "type": "integer",
+            "minimum": -3650000,
+            "maximum": 3650000,
+            "description": "Days to add; negative to subtract."
+          },
+          "timeZone": {
+            "description": "Optional IANA time zone (e.g. \"Europe/Berlin\"). Used to interpret date-time inputs as local wall-clock time.",
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 64
+          }
+        },
+        "required": [
+          "date",
+          "days"
+        ],
+        "additionalProperties": false
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "string",
+            "description": "Resulting date (YYYY-MM-DD) or date-time with offset, matching the input kind."
+          },
+          "date": {
+            "type": "string",
+            "description": "Resulting calendar date YYYY-MM-DD."
+          },
+          "dayOfWeek": {
+            "type": "string",
+            "enum": [
+              "monday",
+              "tuesday",
+              "wednesday",
+              "thursday",
+              "friday",
+              "saturday",
+              "sunday"
+            ]
+          }
+        },
+        "required": [
+          "result",
+          "date",
+          "dayOfWeek"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "datetime.add_business_days",
+      "moduleVersion": "1.0.0",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "date": {
+            "type": "string",
+            "minLength": 10,
+            "maxLength": 40,
+            "description": "Start date. Format YYYY-MM-DD, or ISO 8601 date-time with offset (2026-03-15T09:30:00+01:00 / ...Z)."
+          },
+          "days": {
+            "type": "integer",
+            "minimum": -100000,
+            "maximum": 100000,
+            "description": "Business days to add; negative to go backward."
+          },
+          "weekend": {
+            "default": [
+              "saturday",
+              "sunday"
+            ],
+            "description": "Non-working weekdays. Default [\"saturday\", \"sunday\"]. Use [\"friday\", \"saturday\"] for many Middle-East calendars.",
+            "maxItems": 6,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "monday",
+                "tuesday",
+                "wednesday",
+                "thursday",
+                "friday",
+                "saturday",
+                "sunday"
+              ]
+            }
+          },
+          "holidays": {
+            "default": [],
+            "description": "Public holidays as YYYY-MM-DD. Holiday calendars are not built in: pass them explicitly.",
+            "maxItems": 10000,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+            }
+          },
+          "timeZone": {
+            "description": "Optional IANA time zone (e.g. \"Europe/Berlin\"). Used to interpret date-time inputs as local wall-clock time.",
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 64
+          }
+        },
+        "required": [
+          "date",
+          "days"
+        ],
+        "additionalProperties": false
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "string",
+            "description": "Resulting date YYYY-MM-DD."
+          },
+          "dayOfWeek": {
+            "type": "string",
+            "enum": [
+              "monday",
+              "tuesday",
+              "wednesday",
+              "thursday",
+              "friday",
+              "saturday",
+              "sunday"
+            ]
+          },
+          "calendarDays": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991,
+            "description": "Calendar days between start and result (signed)."
+          },
+          "weekend": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "monday",
+                "tuesday",
+                "wednesday",
+                "thursday",
+                "friday",
+                "saturday",
+                "sunday"
+              ]
+            }
+          }
+        },
+        "required": [
+          "result",
+          "dayOfWeek",
+          "calendarDays",
+          "weekend"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "datetime.business_days_between",
+      "moduleVersion": "1.0.0",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "start": {
+            "type": "string",
+            "minLength": 10,
+            "maxLength": 40,
+            "description": "Start date. Format YYYY-MM-DD, or ISO 8601 date-time with offset (2026-03-15T09:30:00+01:00 / ...Z)."
+          },
+          "end": {
+            "type": "string",
+            "minLength": 10,
+            "maxLength": 40,
+            "description": "End date. Format YYYY-MM-DD, or ISO 8601 date-time with offset (2026-03-15T09:30:00+01:00 / ...Z)."
+          },
+          "weekend": {
+            "default": [
+              "saturday",
+              "sunday"
+            ],
+            "description": "Non-working weekdays. Default [\"saturday\", \"sunday\"]. Use [\"friday\", \"saturday\"] for many Middle-East calendars.",
+            "maxItems": 6,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "monday",
+                "tuesday",
+                "wednesday",
+                "thursday",
+                "friday",
+                "saturday",
+                "sunday"
+              ]
+            }
+          },
+          "holidays": {
+            "default": [],
+            "description": "Public holidays as YYYY-MM-DD. Holiday calendars are not built in: pass them explicitly.",
+            "maxItems": 10000,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+            }
+          },
+          "endpoints": {
+            "default": "both",
+            "description": "Which endpoints are counted. Default \"both\".",
+            "type": "string",
+            "enum": [
+              "both",
+              "start_only",
+              "end_only",
+              "neither"
+            ]
+          },
+          "timeZone": {
+            "description": "Optional IANA time zone (e.g. \"Europe/Berlin\"). Used to interpret date-time inputs as local wall-clock time.",
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 64
+          }
+        },
+        "required": [
+          "start",
+          "end"
+        ],
+        "additionalProperties": false
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          },
+          "calendarDays": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          },
+          "endpoints": {
+            "type": "string",
+            "enum": [
+              "both",
+              "start_only",
+              "end_only",
+              "neither"
+            ]
+          },
+          "weekend": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "monday",
+                "tuesday",
+                "wednesday",
+                "thursday",
+                "friday",
+                "saturday",
+                "sunday"
+              ]
+            }
+          }
+        },
+        "required": [
+          "result",
+          "calendarDays",
+          "endpoints",
+          "weekend"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "datetime.is_business_day",
+      "moduleVersion": "1.0.0",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "date": {
+            "type": "string",
+            "minLength": 10,
+            "maxLength": 40,
+            "description": "Date to check. Format YYYY-MM-DD, or ISO 8601 date-time with offset (2026-03-15T09:30:00+01:00 / ...Z)."
+          },
+          "weekend": {
+            "default": [
+              "saturday",
+              "sunday"
+            ],
+            "description": "Non-working weekdays. Default [\"saturday\", \"sunday\"]. Use [\"friday\", \"saturday\"] for many Middle-East calendars.",
+            "maxItems": 6,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "monday",
+                "tuesday",
+                "wednesday",
+                "thursday",
+                "friday",
+                "saturday",
+                "sunday"
+              ]
+            }
+          },
+          "holidays": {
+            "default": [],
+            "description": "Public holidays as YYYY-MM-DD. Holiday calendars are not built in: pass them explicitly.",
+            "maxItems": 10000,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+            }
+          },
+          "timeZone": {
+            "description": "Optional IANA time zone (e.g. \"Europe/Berlin\"). Used to interpret date-time inputs as local wall-clock time.",
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 64
+          }
+        },
+        "required": [
+          "date"
+        ],
+        "additionalProperties": false
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "boolean"
+          },
+          "reason": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "weekend",
+                  "holiday"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Why it is not a business day; null if it is."
+          },
+          "date": {
+            "type": "string"
+          },
+          "dayOfWeek": {
+            "type": "string",
+            "enum": [
+              "monday",
+              "tuesday",
+              "wednesday",
+              "thursday",
+              "friday",
+              "saturday",
+              "sunday"
+            ]
+          }
+        },
+        "required": [
+          "result",
+          "reason",
+          "date",
+          "dayOfWeek"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "datetime.day_of_week",
+      "moduleVersion": "1.0.0",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "date": {
+            "type": "string",
+            "minLength": 10,
+            "maxLength": 40,
+            "description": "Date. Format YYYY-MM-DD, or ISO 8601 date-time with offset (2026-03-15T09:30:00+01:00 / ...Z)."
+          },
+          "timeZone": {
+            "description": "Optional IANA time zone (e.g. \"Europe/Berlin\"). Used to interpret date-time inputs as local wall-clock time.",
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 64
+          }
+        },
+        "required": [
+          "date"
+        ],
+        "additionalProperties": false
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "string",
+            "enum": [
+              "monday",
+              "tuesday",
+              "wednesday",
+              "thursday",
+              "friday",
+              "saturday",
+              "sunday"
+            ]
+          },
+          "isoWeekday": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 7
+          },
+          "date": {
+            "type": "string"
+          },
+          "isWeekend": {
+            "type": "boolean",
+            "description": "True for Saturday or Sunday."
+          }
+        },
+        "required": [
+          "result",
+          "isoWeekday",
+          "date",
+          "isWeekend"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "datetime.days_in_month",
+      "moduleVersion": "1.0.0",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "year": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9999,
+            "description": "Year (1-9999, proleptic Gregorian)."
+          },
+          "month": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 12,
+            "description": "Month 1-12."
+          }
+        },
+        "required": [
+          "year",
+          "month"
+        ],
+        "additionalProperties": false
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          },
+          "year": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          },
+          "month": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          },
+          "isLeapYear": {
+            "type": "boolean"
+          },
+          "firstDay": {
+            "type": "string"
+          },
+          "lastDay": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "result",
+          "year",
+          "month",
+          "isLeapYear",
+          "firstDay",
+          "lastDay"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "datetime.is_leap_year",
+      "moduleVersion": "1.0.0",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "year": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9999,
+            "description": "Year (1-9999, proleptic Gregorian)."
+          }
+        },
+        "required": [
+          "year"
+        ],
+        "additionalProperties": false
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "boolean"
+          },
+          "year": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          },
+          "daysInYear": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          }
+        },
+        "required": [
+          "result",
+          "year",
+          "daysInYear"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "units.convert",
+      "moduleVersion": "1.0.0",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "number",
+            "description": "Value to convert."
+          },
+          "from": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 40,
+            "description": "Source unit symbol or name, e.g. \"km/h\", \"°F\", \"GiB\", \"square feet\"."
+          },
+          "to": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 40,
+            "description": "Target unit symbol or name."
+          },
+          "significantDigits": {
+            "description": "Optional rounding of the result to N significant digits. Default: no rounding.",
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 30
+          }
+        },
+        "required": [
+          "value",
+          "from",
+          "to"
+        ],
+        "additionalProperties": false
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "number",
+            "description": "Converted value (nearest double)."
+          },
+          "resultDecimal": {
+            "type": "string",
+            "description": "Converted value as a decimal string (up to 30 significant digits)."
+          },
+          "value": {
+            "type": "number"
+          },
+          "from": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "id",
+              "name"
+            ],
+            "additionalProperties": false
+          },
+          "to": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "id",
+              "name"
+            ],
+            "additionalProperties": false
+          },
+          "category": {
+            "type": "string",
+            "enum": [
+              "length",
+              "mass",
+              "temperature",
+              "area",
+              "volume",
+              "speed",
+              "time",
+              "energy",
+              "power",
+              "pressure",
+              "data"
+            ]
+          },
+          "significantDigits": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": -9007199254740991,
+                "maximum": 9007199254740991
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "result",
+          "resultDecimal",
+          "value",
+          "from",
+          "to",
+          "category",
+          "significantDigits"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "units.list_units",
+      "moduleVersion": "1.0.0",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "category": {
+            "description": "Optional category filter.",
+            "type": "string",
+            "enum": [
+              "length",
+              "mass",
+              "temperature",
+              "area",
+              "volume",
+              "speed",
+              "time",
+              "energy",
+              "power",
+              "pressure",
+              "data"
+            ]
+          }
+        },
+        "additionalProperties": false
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "categories": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "category": {
+                  "type": "string",
+                  "enum": [
+                    "length",
+                    "mass",
+                    "temperature",
+                    "area",
+                    "volume",
+                    "speed",
+                    "time",
+                    "energy",
+                    "power",
+                    "pressure",
+                    "data"
+                  ]
+                },
+                "baseUnit": {
+                  "type": "string"
+                },
+                "units": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "aliases": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "name",
+                      "aliases"
+                    ],
+                    "additionalProperties": false
+                  }
+                }
+              },
+              "required": [
+                "category",
+                "baseUnit",
+                "units"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "ambiguous": {
+            "type": "object",
+            "propertyNames": {
+              "type": "string"
+            },
+            "additionalProperties": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "required": [
+          "categories",
+          "ambiguous"
+        ],
+        "additionalProperties": false
+      }
+    }
+  ]
+}
