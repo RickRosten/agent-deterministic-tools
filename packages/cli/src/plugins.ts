@@ -86,6 +86,22 @@ export function modulesFromExports(ns: Record<string, unknown>): Module[] {
 const cliDir = dirname(fileURLToPath(import.meta.url));
 
 /**
+ * Directories above the CLI's own dist folder. Covers the package itself and the project that
+ * installed it, e.g. <project>/node_modules/@rickrosten/agent-deterministic-tools/dist.
+ */
+function cliAncestors(): string[] {
+  const dirs: string[] = [];
+  let dir = cliDir;
+  for (let i = 0; i < 5; i++) {
+    const parent = dirname(dir);
+    if (parent === dir) break;
+    dirs.push(parent);
+    dir = parent;
+  }
+  return dirs;
+}
+
+/**
  * Loads an explicitly configured plugin. Only specifiers listed by the user are ever loaded;
  * there is no scanning of node_modules.
  */
@@ -98,7 +114,7 @@ export async function loadPlugin(specifier: string, options: { configDir: string
       throw new PluginError(specifier, `Plugin directory "${specifier}" has no built entry point (run its build first).`);
     }
   } else {
-    resolvedPath = resolvePackage(specifier, [options.configDir, options.cwd, resolve(cliDir, '..'), resolve(cliDir, '..', '..', '..')]);
+    resolvedPath = resolvePackage(specifier, [options.configDir, options.cwd, ...cliAncestors()]);
   }
   if (!resolvedPath) {
     throw new PluginError(
