@@ -41,6 +41,11 @@ function boundKind(origin: string, count: string): string {
   }
 }
 
+/** Prefixes fragments such as "must be positive" with the field name. */
+function withSubject(subject: string, message: string): string {
+  return /^(must|should|is|cannot|expected)\b/.test(message) ? `${subject} ${message}` : message;
+}
+
 export interface ValidationIssue {
   field: string;
   message: string;
@@ -77,7 +82,7 @@ export function formatIssue(issue: z.core.$ZodIssue, rawInput: unknown): Validat
         message: `${subject} must be one of: ${issue.values.map((v) => JSON.stringify(v)).join(', ')}`,
       };
     case 'invalid_format':
-      if (issue.message && !issue.message.startsWith('Invalid')) return { field, message: `${subject}: ${issue.message}` };
+      if (issue.message && !issue.message.startsWith('Invalid')) return { field, message: withSubject(subject, issue.message) };
       return { field, message: `${subject} must be a valid ${issue.format}` };
     case 'not_multiple_of':
       return { field, message: `${subject} must be a multiple of ${String(issue.divisor)}` };
@@ -89,10 +94,22 @@ export function formatIssue(issue: z.core.$ZodIssue, rawInput: unknown): Validat
         message: `Unknown field${issue.keys.length > 1 ? 's' : ''}: ${issue.keys.join(', ')}. Check the input schema for the exact parameter names.`,
       };
     }
-    case 'invalid_union':
+    case 'invalid_union': {
+      const nested = issue.errors.flat();
+      const specific = nested.find((n) => n.code !== 'invalid_type');
+      if (specific) {
+        return formatIssue({ ...specific, path: [...issue.path, ...specific.path] } as z.core.$ZodIssue, rawInput);
+      }
+      const expected = [...new Set(nested.map((n) => (n.code === 'invalid_type' ? n.expected : undefined)).filter(Boolean))];
+      if (expected.length) {
+        const actual = valueAt(rawInput, issue.path);
+        if (actual === undefined) return { field, message: `${subject} is required (expected ${expected.join(' or ')})` };
+        return { field, message: `${subject} must be ${expected.join(' or ')}, received ${describeType(actual)}` };
+      }
       return { field, message: `${subject} does not match any accepted form` };
+    }
     case 'custom':
-      return { field, message: issue.message };
+      return { field, message: withSubject(subject, issue.message) };
     default:
       return { field, message: `${subject}: ${issue.message}` };
   }
