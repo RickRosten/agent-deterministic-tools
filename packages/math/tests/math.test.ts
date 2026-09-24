@@ -136,6 +136,14 @@ describe('math.sum / average / weighted_average', () => {
     expect(await ok('sum', { values: [0.1, 0.2] })).toEqual({ result: 0.3, count: 2 });
     expect(await ok('sum', { values: [1e16, 1, -1e16] })).toEqual({ result: 1, count: 3 });
   });
+  it('regression: tiny addends survive cancellation in every order', async () => {
+    const xs = [5e-324, -999999999999.9995, 999999999999.9995];
+    for (const order of [[0, 1, 2], [0, 2, 1], [1, 0, 2], [1, 2, 0], [2, 0, 1], [2, 1, 0]]) {
+      expect((await ok('sum', { values: order.map((i) => xs[i]!) })).result).toBe(5e-324);
+    }
+    expect((await ok('sum', { values: [1e308, 1e-300, -1e308] })).result).toBe(1e-300);
+    expect((await ok('weighted_average', { values: [1e-300, 1e15, -1e15], weights: [1, 1, 1] })).result).toBe(3.3333333333333334e-301);
+  });
   it('averages', async () => {
     expect(await ok('average', { values: [2, 4, 9] })).toEqual({ result: 5, count: 3, sum: 15 });
     expect(await ok('average', { values: [0.1, 0.2, 0.3] })).toMatchObject({ result: 0.2 });

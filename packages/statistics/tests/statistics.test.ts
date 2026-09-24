@@ -163,4 +163,11 @@ describe('min / max / sum', () => {
     expect(await ok('sum', { values: [0.1, 0.2, 0.3] })).toEqual({ result: 0.6, count: 3 });
     expect(await result('min', { values: [-0, 0] })).toBe(0);
   });
+  it('regression: sum and mean do not depend on the order of values', async () => {
+    const xs = [5e-324, -999999999999.9995, 999999999999.9995];
+    for (const v of [xs, [...xs].reverse(), [xs[1]!, xs[0]!, xs[2]!]]) {
+      expect(await result('sum', { values: v })).toBe(5e-324);
+    }
+    expect(await result('mean', { values: [1e308, 3e-300, -1e308] })).toBe(1e-300);
+  });
 });

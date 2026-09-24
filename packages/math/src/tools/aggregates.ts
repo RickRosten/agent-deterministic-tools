@@ -54,12 +54,9 @@ export const weightedAverage = defineTool({
         'weights',
       );
     }
-    let num = new D(0);
-    let den = new D(0);
-    xs.forEach((x, i) => {
-      num = num.plus(new D(x).times(weights[i]!));
-      den = den.plus(weights[i]!);
-    });
+    // Products of two doubles have at most 34 significant digits: exact at 40-digit precision.
+    const num = decimalSum(xs.map((x, i) => new D(x).times(weights[i]!)));
+    const den = decimalSum(weights);
     if (den.isZero()) throw divisionByZero('weights must not sum to 0', 'weights');
     return { result: toNumber(num.div(den)), weightSum: toNumber(den) };
   },
