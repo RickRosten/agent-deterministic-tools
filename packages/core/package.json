@@ -1,0 +1,46 @@
+{
+  "name": "@rickrosten/agent-deterministic-tools-core",
+  "version": "1.0.0",
+  "description": "Core abstractions for Deterministic Tools: tools, modules, registry, validation and structured errors.",
+  "license": "MIT",
+  "author": "Artyom Churbanov",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "sideEffects": false,
+  "engines": {
+    "node": ">=20"
+  },
+  "keywords": [
+    "ai",
+    "agents",
+    "mcp",
+    "deterministic",
+    "tools"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RickRosten/agent-deterministic-tools.git",
+    "directory": "packages/core"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "tsup src/index.ts --format esm --dts --clean --target node20 --tsconfig ../../tsconfig.build.json"
+  },
+  "dependencies": {
+    "zod": "^4.1.0"
+  }
+}
