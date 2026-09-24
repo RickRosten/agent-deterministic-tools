@@ -26,7 +26,7 @@
     "docs:tools": "node packages/cli/dist/bin.js --config .no-user-config.json list --all --format markdown > docs/tools.md",
     "check": "npm run typecheck && npm run lint && npm run build && npm run test && npm run validate:packages",
     "changeset": "changeset",
-    "version-packages": "changeset version",
+    "version-packages": "changeset version && node scripts/sync-server-json.mjs",
     "release": "npm run build && changeset publish"
   },
   "devDependencies": {

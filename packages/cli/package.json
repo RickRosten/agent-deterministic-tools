@@ -4,6 +4,7 @@
   "description": "Deterministic calculation tools for AI agents as a local MCP server. Run `npx @rickrosten/agent-deterministic-tools` to set up Claude, Cursor or OpenAI.",
   "license": "MIT",
   "author": "Artyom Churbanov",
+  "mcpName": "io.github.rickrosten/agent-deterministic-tools",
   "type": "module",
   "bin": {
     "deterministic-tools": "./dist/bin.js"

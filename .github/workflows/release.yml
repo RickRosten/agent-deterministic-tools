@@ -3,6 +3,7 @@ name: Release
 on:
   push:
     branches: [main]
+  workflow_dispatch:
 
 concurrency: release-${{ github.ref }}
 
@@ -26,6 +27,9 @@ jobs:
           cache: npm
           registry-url: https://registry.npmjs.org
 
+      # npm >= 11.5 is required for npm Trusted Publishing (OIDC, no token).
+      - run: npm install -g npm@latest
+
       - run: npm ci
 
       - name: Verify
@@ -40,8 +44,9 @@ jobs:
           REQUIRE_BUILD: '1'
 
       # With pending changesets: opens/updates the "Version Packages" PR (versions + CHANGELOG.md).
-      # After that PR is merged: publishes to npm with provenance and creates GitHub releases.
+      # Otherwise: publishes every package version not yet on npm, pushes tags, creates GitHub releases.
       - name: Changesets
+        id: changesets
         uses: changesets/action@v1
         with:
           version: npm run version-packages
@@ -51,6 +56,14 @@ jobs:
           createGithubReleases: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # Optional once Trusted Publishing is configured on npmjs.com for every package.
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           NPM_CONFIG_PROVENANCE: 'true'
+
+      - name: Publish to the MCP Registry
+        if: steps.changesets.outputs.published == 'true'
+        run: |
+          curl -sSL "https://github.com/modelcontextprotocol/registry/releases/latest/download/mcp-publisher_linux_amd64.tar.gz" | tar xz mcp-publisher
+          ./mcp-publisher login github-oidc
+          ./mcp-publisher publish

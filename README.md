@@ -20,6 +20,10 @@ npx @rickrosten/agent-deterministic-tools
 The setup wizard picks modules, writes the configuration and connects **Claude Desktop**,
 **Cursor** or **Claude Code** for you. No manual JSON editing.
 
+[Add to Cursor](https://cursor.com/en/install-mcp?name=deterministic-tools&config=eyJjb21tYW5kIjoibnB4IiwiYXJncyI6WyIteSIsIkByaWNrcm9zdGVuL2FnZW50LWRldGVybWluaXN0aWMtdG9vbHMiLCJzZXJ2ZSJdfQ%3D%3D) ·
+[Install in VS Code](https://insiders.vscode.dev/redirect/mcp/install?name=deterministic-tools&config=%7B%22command%22%3A%22npx%22%2C%22args%22%3A%5B%22-y%22%2C%22%40rickrosten%2Fagent-deterministic-tools%22%2C%22serve%22%5D%7D) ·
+Claude Code: `claude mcp add --scope user deterministic-tools -- npx -y @rickrosten/agent-deterministic-tools serve`
+
 ## Example
 
 ```json
@@ -131,6 +135,7 @@ exports, in OpenAI definitions and in the generated documentation. See
 [Cursor](docs/cursor.md) ·
 [OpenAI](docs/openai.md) ·
 [Security](docs/security.md) ·
+[Publishing & distribution](docs/publishing.md) ·
 [Contributing](docs/contributing.md)
 
 ## Principle

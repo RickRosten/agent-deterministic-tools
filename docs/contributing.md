@@ -77,5 +77,6 @@ regenerated, so API changes cannot slip through unnoticed.
 ## Releases
 
 Merging changesets to `main` makes the release workflow open a "Version Packages" pull
-request (bumps versions, updates `CHANGELOG.md`). Merging that pull request publishes the
-packages to npm with provenance and creates GitHub releases.
+request (bumps versions, updates `CHANGELOG.md` and `server.json`). Merging that pull request
+publishes the packages to npm with provenance, creates GitHub releases and publishes
+`server.json` to the MCP Registry. Setup details: [publishing](publishing.md).

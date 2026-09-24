@@ -46,6 +46,12 @@ First stable release.
   `config`, `doctor`, `install`/`uninstall` (Claude Desktop, Cursor, Claude Code), `plugin`,
   `call`, `schema`, `--debug`.
 - Module-level configuration and explicit plugin allow-list.
+- `config.schema.json` for editor completion of the configuration file.
+
+### Distribution
+
+- npm packages under the `@rickrosten` scope (`@rickrosten/agent-deterministic-tools*`).
+- MCP Registry metadata (`server.json`, `mcpName`) published by the release workflow.
 
 ### Tooling
 

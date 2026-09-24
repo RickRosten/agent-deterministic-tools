@@ -1,0 +1,28 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.rickrosten/agent-deterministic-tools",
+  "title": "Deterministic Tools",
+  "description": "Exact, validated calculations for AI agents: math, finance, statistics, dates and units.",
+  "repository": {
+    "url": "https://github.com/RickRosten/agent-deterministic-tools",
+    "source": "github"
+  },
+  "version": "1.0.0",
+  "packages": [
+    {
+      "registryType": "npm",
+      "registryBaseUrl": "https://registry.npmjs.org",
+      "identifier": "@rickrosten/agent-deterministic-tools",
+      "version": "1.0.0",
+      "transport": {
+        "type": "stdio"
+      },
+      "packageArguments": [
+        {
+          "type": "positional",
+          "value": "serve"
+        }
+      ]
+    }
+  ]
+}
