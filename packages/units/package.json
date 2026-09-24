@@ -1,0 +1,46 @@
+{
+  "name": "@rickrosten/agent-deterministic-tools-units",
+  "version": "1.0.0",
+  "description": "Deterministic unit conversion for AI agents: length, mass, temperature, area, volume, speed, time, energy, power, pressure, data.",
+  "license": "MIT",
+  "author": "Artyom Churbanov",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "sideEffects": false,
+  "engines": {
+    "node": ">=20"
+  },
+  "keywords": [
+    "deterministic-tools-module",
+    "units",
+    "mcp",
+    "ai-tools"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RickRosten/agent-deterministic-tools.git",
+    "directory": "packages/units"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "tsup src/index.ts --format esm --dts --clean --target node20 --tsconfig ../../tsconfig.build.json"
+  },
+  "dependencies": {
+    "@rickrosten/agent-deterministic-tools-core": "^1.0.0",
+    "decimal.js": "^10.6.0"
+  }
+}
