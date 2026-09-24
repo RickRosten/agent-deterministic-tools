@@ -39,7 +39,14 @@ for (const dir of dirs) {
     fail(pkg.name, `npm pack failed: ${pack.stderr}`);
     continue;
   }
-  const files = new Set(JSON.parse(pack.stdout)[0].files.map((f) => f.path.replace(/\\/g, '/')));
+  // npm <= 11 prints an array of pack results, npm >= 12 an object keyed by package name.
+  const parsed = JSON.parse(pack.stdout);
+  const result = Array.isArray(parsed) ? parsed[0] : (parsed[pkg.name] ?? Object.values(parsed)[0]);
+  if (!Array.isArray(result?.files)) {
+    fail(pkg.name, 'unexpected `npm pack --json` output');
+    continue;
+  }
+  const files = new Set(result.files.map((f) => f.path.replace(/\\/g, '/')));
   for (const required of ['package.json', 'README.md', 'dist/index.js', 'dist/index.d.ts']) {
     if (!files.has(required)) fail(pkg.name, `tarball is missing ${required}`);
   }

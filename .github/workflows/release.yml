@@ -17,18 +17,19 @@ jobs:
     name: Version or publish
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           fetch-depth: 0
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
           node-version: 22
           cache: npm
           registry-url: https://registry.npmjs.org
 
-      # npm >= 11.5 is required for npm Trusted Publishing (OIDC, no token).
-      - run: npm install -g npm@latest
+      # npm >= 11.5.1 is required for npm Trusted Publishing (OIDC, no token).
+      # Pinned to a major version so npm releases cannot change CI behavior unexpectedly.
+      - run: npm install -g npm@11
 
       - run: npm ci
 
