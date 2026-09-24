@@ -1,4 +1,5 @@
 import { spawnSync } from 'node:child_process';
+import { realpathSync } from 'node:fs';
 import { dirname } from 'node:path';
 import { formatToolDescription, type ExecutionRecord } from '@rickrosten/agent-deterministic-tools-core';
 import { createStreamableHttpServer, serveStdio, toMcpTool, type Logger } from '@rickrosten/agent-deterministic-tools-mcp';
@@ -289,7 +290,12 @@ export async function run(argv: readonly string[], options: RunOptions = {}): Pr
     .option('--json', 'JSON output')
     .option('--no-spawn', 'skip launching the stdio server as a child process')
     .action(async (opts: { json?: boolean; spawn: boolean }) => {
-      const bin = e.binPath;
+      let bin = e.binPath;
+      try {
+        if (bin) bin = realpathSync(bin);
+      } catch {
+        bin = undefined;
+      }
       const stdioCommand =
         opts.spawn && bin && /\.(c|m)?js$/.test(bin)
           ? { command: process.execPath, args: [bin, 'serve', '--config', configPath()] }
