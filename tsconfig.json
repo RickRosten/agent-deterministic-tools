@@ -20,6 +20,7 @@
     "packages/*/src",
     "packages/*/tests",
     "apps/*/src",
+    "apps/*/tests",
     "examples/*/src",
     "examples/*/tests",
     "tests",

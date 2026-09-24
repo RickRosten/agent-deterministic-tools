@@ -1,0 +1,24 @@
+{
+  "name": "@rickrosten/agent-deterministic-tools-server",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Deployable Streamable HTTP MCP server for Deterministic Tools (remote / OpenAI MCP scenarios).",
+  "license": "MIT",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "tsup src/main.ts src/app.ts --format esm --clean --target node20 --tsconfig ../../tsconfig.build.json",
+    "start": "node dist/main.js"
+  },
+  "dependencies": {
+    "@rickrosten/agent-deterministic-tools-core": "^1.0.0",
+    "@rickrosten/agent-deterministic-tools-datetime": "^1.0.0",
+    "@rickrosten/agent-deterministic-tools-finance": "^1.0.0",
+    "@rickrosten/agent-deterministic-tools-math": "^1.0.0",
+    "@rickrosten/agent-deterministic-tools-mcp": "^1.0.0",
+    "@rickrosten/agent-deterministic-tools-statistics": "^1.0.0",
+    "@rickrosten/agent-deterministic-tools-units": "^1.0.0"
+  }
+}
