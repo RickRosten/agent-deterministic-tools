@@ -22,8 +22,9 @@
     "test:integration": "vitest run tests/integration",
     "validate:packages": "node scripts/validate-packages.mjs",
     "api:snapshot": "vitest run tests/api-snapshot.test.ts -u",
+    "schemas:update": "vitest run tests/api-snapshot.test.ts packages/cli/tests/config-schema.test.ts -u",
     "docs:tools": "node packages/cli/dist/bin.js --config .no-user-config.json list --all --format markdown > docs/tools.md",
-    "check": "npm run typecheck && npm run lint && npm run test && npm run build && npm run validate:packages",
+    "check": "npm run typecheck && npm run lint && npm run build && npm run test && npm run validate:packages",
     "changeset": "changeset",
     "version-packages": "changeset version",
     "release": "npm run build && changeset publish"

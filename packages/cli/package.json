@@ -19,6 +19,7 @@
   },
   "files": [
     "dist",
+    "config.schema.json",
     "README.md"
   ],
   "engines": {

@@ -47,6 +47,12 @@ export interface LoadedConfig {
   config: Config;
 }
 
+/** JSON Schema of the configuration file, published as `config.schema.json` for editor completion. */
+export function configJsonSchema(): Record<string, unknown> {
+  const { $schema, ...rest } = z.toJSONSchema(ConfigSchema, { target: 'draft-2020-12', io: 'input' }) as Record<string, unknown>;
+  return { $schema, $id: CONFIG_SCHEMA_URL, title: 'Deterministic Tools configuration', ...rest };
+}
+
 export function loadConfig(path: string): LoadedConfig {
   let raw: Record<string, unknown> | undefined;
   try {

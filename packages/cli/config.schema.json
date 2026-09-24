@@ -1,0 +1,84 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://unpkg.com/@rickrosten/agent-deterministic-tools@1/config.schema.json",
+  "title": "Deterministic Tools configuration",
+  "type": "object",
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "modules": {
+      "description": "Enabled module ids. Omit to enable every installed module.",
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "plugins": {
+      "description": "Explicitly allowed third-party module packages (npm names or local paths). Nothing else is ever loaded.",
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "disabledTools": {
+      "description": "Fully-qualified tool names to hide, e.g. \"finance.irr\".",
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "logInputs": {
+      "description": "Include tool input values in debug execution logs. Default false.",
+      "type": "boolean"
+    },
+    "http": {
+      "type": "object",
+      "properties": {
+        "host": {
+          "description": "Interface to bind. Default 127.0.0.1.",
+          "type": "string"
+        },
+        "port": {
+          "description": "Port. Default 3333.",
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535
+        },
+        "path": {
+          "description": "Endpoint path. Default /mcp.",
+          "type": "string",
+          "format": "starts_with",
+          "pattern": "^\\/.*"
+        },
+        "publicUrl": {
+          "description": "Public base URL used in auth metadata.",
+          "type": "string",
+          "format": "uri"
+        },
+        "allowedOrigins": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "allowedHosts": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "authorizationServers": {
+          "description": "OAuth authorization servers advertised via RFC 9728 metadata.",
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "uri"
+          }
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

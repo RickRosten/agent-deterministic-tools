@@ -4,7 +4,7 @@
 // - `npm pack --dry-run` contents (built entry points and declarations are shipped)
 // - required package.json metadata
 import { spawnSync } from 'node:child_process';
-import { existsSync, readdirSync, readFileSync } from 'node:fs';
+import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 import { publint } from 'publint';
 import { formatMessage } from 'publint/utils';
@@ -42,6 +42,10 @@ for (const dir of dirs) {
   const files = new Set(JSON.parse(pack.stdout)[0].files.map((f) => f.path.replace(/\\/g, '/')));
   for (const required of ['package.json', 'README.md', 'dist/index.js', 'dist/index.d.ts']) {
     if (!files.has(required)) fail(pkg.name, `tarball is missing ${required}`);
+  }
+  for (const entry of pkg.files ?? []) {
+    const p = join(dir, entry);
+    if (existsSync(p) && statSync(p).isFile() && !files.has(entry)) fail(pkg.name, `tarball is missing ${entry}`);
   }
   for (const bin of Object.values(pkg.bin ?? {})) {
     const path = bin.replace(/^\.\//, '');
