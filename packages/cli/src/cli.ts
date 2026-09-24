@@ -347,7 +347,7 @@ export async function run(argv: readonly string[], options: RunOptions = {}): Pr
     .action(async (spec: string, opts: { install: boolean }) => {
       const { config } = readConfig();
       const dir = dirname(configPath());
-      const isPath = spec.startsWith('.') || spec.startsWith('/') || /^[A-Za-z]:[\\/]/.test(spec);
+      const isPath = spec.startsWith('.') || spec.startsWith('/') || spec.startsWith('file:') || /^[A-Za-z]:[\\/]/.test(spec);
       if (!isPath && opts.install) {
         p.err(`Installing ${spec} into ${dir} ...`);
         const npm = e.platform === 'win32' ? 'npm.cmd' : 'npm';

@@ -28,7 +28,7 @@ export default tseslint.config(
     },
   },
   {
-    files: ['packages/{core,math,statistics,finance,datetime,units}/src/**/*.ts'],
+    files: ['packages/{core,math,statistics,finance,datetime,units}/src/**/*.ts', 'examples/acme-chemistry/src/**/*.ts'],
     rules: {
       'no-restricted-properties': [
         'error',

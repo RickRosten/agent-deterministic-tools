@@ -1,4 +1,4 @@
-import { existsSync, readFileSync } from 'node:fs';
+import { existsSync, readFileSync, statSync } from 'node:fs';
 import { dirname, isAbsolute, join, resolve } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { assertValidModule, type Module } from '@rickrosten/agent-deterministic-tools-core';
@@ -43,16 +43,24 @@ function pickExport(exportsField: unknown): string | undefined {
   return undefined;
 }
 
+/** Entry file of a package directory (exports > module > main > index.js). */
+export function packageEntry(pkgDir: string): string | undefined {
+  const pkgJson = join(pkgDir, 'package.json');
+  if (!existsSync(pkgJson)) return undefined;
+  const pkg = JSON.parse(readFileSync(pkgJson, 'utf8')) as Record<string, unknown>;
+  const entry =
+    pickExport(pkg['exports']) ??
+    (typeof pkg['module'] === 'string' ? pkg['module'] : undefined) ??
+    (typeof pkg['main'] === 'string' ? pkg['main'] : 'index.js');
+  const file = resolve(pkgDir, entry);
+  return existsSync(file) ? file : undefined;
+}
+
 /** Resolves an npm package entry point from a list of directories containing node_modules. */
 export function resolvePackage(specifier: string, searchDirs: readonly string[]): string | undefined {
   for (const dir of searchDirs) {
-    const pkgDir = join(dir, 'node_modules', ...specifier.split('/'));
-    const pkgJson = join(pkgDir, 'package.json');
-    if (!existsSync(pkgJson)) continue;
-    const pkg = JSON.parse(readFileSync(pkgJson, 'utf8')) as Record<string, unknown>;
-    const entry = pickExport(pkg['exports']) ?? (typeof pkg['module'] === 'string' ? pkg['module'] : undefined) ?? (typeof pkg['main'] === 'string' ? pkg['main'] : 'index.js');
-    const file = resolve(pkgDir, entry);
-    if (existsSync(file)) return file;
+    const file = packageEntry(join(dir, 'node_modules', ...specifier.split('/')));
+    if (file) return file;
   }
   return undefined;
 }
@@ -85,7 +93,10 @@ export async function loadPlugin(specifier: string, options: { configDir: string
   let resolvedPath: string | undefined;
   if (isPathSpecifier(specifier)) {
     const p = specifier.startsWith('file:') ? fileURLToPath(specifier) : resolve(options.cwd, specifier);
-    resolvedPath = existsSync(p) ? p : undefined;
+    if (existsSync(p)) resolvedPath = statSync(p).isDirectory() ? packageEntry(p) : p;
+    if (existsSync(p) && !resolvedPath) {
+      throw new PluginError(specifier, `Plugin directory "${specifier}" has no built entry point (run its build first).`);
+    }
   } else {
     resolvedPath = resolvePackage(specifier, [options.configDir, options.cwd, resolve(cliDir, '..'), resolve(cliDir, '..', '..', '..')]);
   }

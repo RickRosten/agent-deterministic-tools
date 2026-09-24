@@ -1,0 +1,36 @@
+{
+  "name": "@acme/chemistry",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Example third-party Deterministic Tools module: molar mass, molarity and dilution.",
+  "license": "MIT",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "keywords": [
+    "deterministic-tools-module",
+    "chemistry"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "tsup src/index.ts --format esm --dts --clean --target node20 --tsconfig ../../tsconfig.build.json",
+    "test": "vitest run --root ../.. examples/acme-chemistry"
+  },
+  "peerDependencies": {
+    "@rickrosten/agent-deterministic-tools-core": "^1.0.0"
+  },
+  "devDependencies": {
+    "@rickrosten/agent-deterministic-tools-core": "^1.0.0"
+  }
+}
